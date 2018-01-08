@@ -7,9 +7,9 @@ namespace SubIt.Features.Blog
     public interface IBlogService
     {
         List<BlogEntry> ListRecent(int fromDaysBack, int toDaysBack);
-        BlogEntry Update(SubItUser user, int blogEntryId, string title, string body);
+        BlogEntry Update(SubItUser user, int blogEntryId, string title, string body, bool commentsDisabled);
         BlogEntry GetFull(string urlFriendlyId);
-        BlogEntry Add(SubItUser subItUser, string title, string body);
+        BlogEntry Add(SubItUser subItUser, string title, string body, bool commentsDisabled);
         bool Delete(SubItUser user, int blogEntryId);
 
         List<BlogComment> ListComments(int blogEntryId);

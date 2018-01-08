@@ -4,19 +4,26 @@ import { TokenResponse } from './models/token-response';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import { User } from './models/user';
 
 @Injectable()
 export class AccountService {
 
-  baseUrl = 'http://localhost:54882/api/login'; // TODO: move to json setting
+  baseUrl = 'http://localhost:54882/api'; // TODO: move to json setting
 
   constructor(private http: Http) {
   }
 
+  getUsers(): Observable<User[]> {
+    return this.http.get(this.baseUrl + '/users').map(res => <User[]>res.json());
+  }
+
+  deleteUser(userId: number) {
+    return this.http.delete(this.baseUrl + '/users/' + userId);
+  }
+
   login(email: string, password: string): Observable<TokenResponse> {
-    console.log('calling POST ' + this.baseUrl + ' with ' + email + '/' + password);
-    return this.http.post(this.baseUrl, { email, password })
-//      .catch((error:any) => Observable.throw(error.json().error || 'Server error'))
+    return this.http.post(this.baseUrl + '/users/login', { email, password })
       .map(res => {
         const json = res.json();
         return {

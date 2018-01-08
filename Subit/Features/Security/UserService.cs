@@ -70,12 +70,23 @@ namespace SubIt.Features.Security
         }
         public List<SubItUser> GetUsers()
         {
-            return _context.Users.Where(u => u.DeletedTime == null).ToList();
+            return _context.Users.Where(u => u.DeletedTime == null).OrderByDescending(u=>u.Created).ToList();
         }
 
         public string GenerateJsonWebToken(SubItUser user)
         {
             return _jwt.GenerateJsonWebToken(user);
+        }
+
+        public bool Delete(int userId)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.DeletedTime == null);
+            if (user == null)
+                return false;
+
+            user.DeletedTime = DateTime.Now;
+            _context.SaveChanges();
+            return true;
         }
     }
 }

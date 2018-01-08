@@ -11,5 +11,6 @@ namespace SubIt.Features.Security
         SubItUser GetUser(string email);
         string GenerateJsonWebToken(SubItUser user);
         List<SubItUser> GetUsers();
+        bool Delete(int userId);
     }
 }

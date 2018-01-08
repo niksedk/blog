@@ -90,7 +90,7 @@ namespace SubIt.Features.Blog
             return _context.BlogEntries.Where(p => p.Created >= from && p.Created <= to).OrderByDescending(p => p.Created).ToList();
         }
 
-        public BlogEntry Add(SubItUser user, string title, string body)
+        public BlogEntry Add(SubItUser user, string title, string body, bool commentsDisabled)
         {
             var urlFriendlyId = GenerateUrlFriendlyId(title);
             if (_context.BlogEntries.Any(p => p.UrlFriendlyId == urlFriendlyId))
@@ -100,6 +100,7 @@ namespace SubIt.Features.Blog
                 Body = body,
                 Title = title,
                 UrlFriendlyId = urlFriendlyId,
+                CommentsDisabled = commentsDisabled,
                 CreatedBy = user,
                 Created = DateTime.UtcNow,
                 Modified = DateTime.UtcNow
@@ -122,7 +123,7 @@ namespace SubIt.Features.Blog
             return sb.ToString();
         }
 
-        public BlogEntry Update(SubItUser user, int blogEntryId, string title, string body)
+        public BlogEntry Update(SubItUser user, int blogEntryId, string title, string body, bool commentsDisabled)
         {
             var blogEntry = _context.BlogEntries.FirstOrDefault(p => p.BlogEntryId == blogEntryId);
             if (blogEntry == null)
@@ -130,6 +131,7 @@ namespace SubIt.Features.Blog
 
             blogEntry.Title = title;
             blogEntry.Body = body;
+            blogEntry.CommentsDisabled = commentsDisabled;
             blogEntry.Modified = DateTime.UtcNow;
 
             _context.SaveChanges();

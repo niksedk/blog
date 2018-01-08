@@ -7,6 +7,7 @@ import { BlogListComponent } from './blog/blog-list/blog-list.component';
 import { BlogEntryComponent } from './blog/blog-entry/blog-entry.component';
 import { BlogEntryWithCommentsComponent } from './blog/blog-entry-with-comments/blog-entry-with-comments.component';
 import { BlogManageComponent } from './admin/blog-manage/blog-manage.component';
+import { UserManageComponent } from './admin/user-manage/user-manage.component';
 
 const routes: Routes = [
   {
@@ -22,12 +23,16 @@ const routes: Routes = [
     component: AccountComponent
   },
   {
-    path: 'comments/:urlFriendlyId',
+    path: 'blog/:urlFriendlyId',
     component: BlogEntryWithCommentsComponent
   },
   {
     path: 'admin/blog',
     component: BlogManageComponent
+  },
+  {
+    path: 'admin/users',
+    component: UserManageComponent
   }
 ];
 

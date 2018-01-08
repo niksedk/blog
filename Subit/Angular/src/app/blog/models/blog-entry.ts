@@ -8,4 +8,5 @@ export interface BlogEntry {
     created: string;
     commentCount: number;
     urlFriendlyId: string;
+    commentsDisabled: boolean;
 }

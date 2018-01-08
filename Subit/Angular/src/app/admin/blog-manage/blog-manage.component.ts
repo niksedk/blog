@@ -30,7 +30,8 @@ export class BlogManageComponent implements OnInit {
       commentCount: 0,
       title: '',
       urlFriendlyId: '',
-      userId: 0
+      userId: 0,
+      commentsDisabled: false
     };
   }
 

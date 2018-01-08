@@ -20,7 +20,7 @@ namespace SubIt.Data
                 {
                     Email = "nikse.dk@gmail.com",
                     Created = DateTime.UtcNow,
-                    Modified = DateTime.UtcNow,
+                    Modified = DateTime.UtcNow,                    
                     Claims = new List<SubItClaim>
                     {
                         new SubItClaim { Key = "role", Value = "admin" }

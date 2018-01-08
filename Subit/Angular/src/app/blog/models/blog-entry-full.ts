@@ -10,5 +10,6 @@ export interface BlogEntryFull {
     created: string;
     commentCount: number;
     urlFriendlyId: string;
+    commentsDisabled: boolean;
     comments: BlogComment[];
 }

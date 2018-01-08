@@ -41,7 +41,16 @@ namespace SubIt.Features.Blog
         [Route("")]
         public IActionResult AddBlogEntry([FromBody] AddBlogEntryRequest request)
         {
-            var blogEntry = _blogService.Add(new SubItUser(), request.Title, request.Body);
+            var blogEntry = _blogService.Add(new SubItUser(), request.Title, request.Body, request.CommentsDisabled);
+            return Ok(blogEntry);
+        }
+
+        [HttpPut]
+        [EnableCors("AllowAll")]
+        [Route("{blogEntryId}")]
+        public IActionResult Update(int blogEntryId, UpdateBlogEntryRequest request)
+        {
+            var blogEntry = _blogService.Update(new SubItUser(), blogEntryId, request.Title, request.Body, request.CommentsDisabled);
             return Ok(blogEntry);
         }
 

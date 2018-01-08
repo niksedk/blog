@@ -20,10 +20,21 @@ namespace SubIt.Features.Security.Controllers
         [HttpGet]
         [EnableCors("AllowAll")]
         [Route("")]
-        public IActionResult Get()
+        public IActionResult GetUsers()
         {
             var users = _userService.GetUsers();
             return Ok(users);
+        }
+
+        [HttpDelete]
+        [EnableCors("AllowAll")]
+        [Route("{userId}")]
+        public IActionResult DeleteUser(int userId)
+        {
+            if (_userService.Delete(userId))
+                return NoContent();
+
+            return NotFound();
         }
 
         [HttpPost]
