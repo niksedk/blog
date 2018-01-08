@@ -1,0 +1,11 @@
+C:\Data\subit\SubIt\bin\Debug\netcoreapp2.0\SubIt.deps.json
+C:\Data\subit\SubIt\bin\Debug\netcoreapp2.0\SubIt.runtimeconfig.json
+C:\Data\subit\SubIt\bin\Debug\netcoreapp2.0\SubIt.runtimeconfig.dev.json
+C:\Data\subit\SubIt\bin\Debug\netcoreapp2.0\SubIt.dll
+C:\Data\subit\SubIt\bin\Debug\netcoreapp2.0\SubIt.pdb
+C:\Data\subit\SubIt\obj\Debug\netcoreapp2.0\SubIt.csprojResolveAssemblyReference.cache
+C:\Data\subit\SubIt\obj\Debug\netcoreapp2.0\SubIt.csproj.CoreCompileInputs.cache
+C:\Data\subit\SubIt\obj\Debug\netcoreapp2.0\SubIt.AssemblyInfoInputs.cache
+C:\Data\subit\SubIt\obj\Debug\netcoreapp2.0\SubIt.AssemblyInfo.cs
+C:\Data\subit\SubIt\obj\Debug\netcoreapp2.0\SubIt.dll
+C:\Data\subit\SubIt\obj\Debug\netcoreapp2.0\SubIt.pdb
