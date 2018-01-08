@@ -1,0 +1,33 @@
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+        <th>Created</th>
+        <th>Title</th>
+        <th>#Comments</th>
+        <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let item of blogEntries | async">
+          <td>{{item.created | date: 'dd/MM-yyyy HH:mm'}}</td>
+          <td>{{item.title}}</td>
+          <td><a routerLink="/comments/{{item.urlFriendlyId}}">{{item.commentCount}}</a></td>
+          <td><button type="button" class="btn btn-link" (click)="deleteBlogEntry(item)">Delete</button></td>
+        </tr>
+  </tbody>
+</table>
+<hr />
+<h2>Add new blog entry</h2>
+  <form>
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" class="form-control" id="title" name="title" [(ngModel)]="newBlogEntry.title" placeholder="Enter title">
+    </div>
+    <div class="form-group">
+      <label for="body">Comment</label>
+      <textarea class="form-control" id="body" name="body" [(ngModel)]="newBlogEntry.body" placeholder="Enter blog entry" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary" (click)="addBlogEntry()">Add blog entry</button>
+  </form>
+

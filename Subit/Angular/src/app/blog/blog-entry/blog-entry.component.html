@@ -1,0 +1,13 @@
+<div *ngIf="blogEntry != null">
+  <div class="card">
+    <div class="card-block">
+      <h5 class="card-title">NEW: {{blogEntry.title}}</h5>
+      <div *ngIf="displayCommentsLink">
+        <div *ngIf="blogEntry.commentCount == 0" class="pull-right"> <a routerLink="comments/{{blogEntry.urlFriendlyId}}">Add comment</a></div>
+        <div *ngIf="blogEntry.commentCount > 0" class="pull-right"> <a routerLink="comments/{{blogEntry.urlFriendlyId}}">Comments <span class="badge badge-pill badge-primary">{{blogEntry.commentCount}}</span></a></div>
+      </div>
+      <p class="card-text">{{blogEntry.body}}</p>
+    </div>
+  </div>
+</div>
+
