@@ -32,6 +32,10 @@ export class AccountService {
     return tokenResponse;
   }  
 
+  public logout() {
+      localStorage.removeItem("tokenResponse")
+  }
+
   private createAuthorizationHeader() : Headers {
     let headers = new Headers();
     headers.append('Authorization', 'Bearer ' + this.getTokenResponse().accessToken); 
@@ -52,5 +56,7 @@ export class AccountService {
         return tokenResponse;
       });
   }
+
+
 
 }

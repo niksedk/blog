@@ -1,5 +1,4 @@
-﻿using Blog.Data.Security;
-using Blog.Features.Blog.Factories;
+﻿using Blog.Features.Blog.Factories;
 using Blog.Features.Blog.ViewModels;
 using Blog.Features.Shared;
 using Microsoft.AspNetCore.Authorization;
@@ -44,7 +43,7 @@ namespace Blog.Features.Blog
         [Authorize(Roles = "admin")]
         public IActionResult AddBlogEntry([FromBody] AddBlogEntryRequest request)
         {
-            var blogEntry = _blogService.Add(new SubItUser(), request.Title, request.Body, request.CommentsDisabled);
+            var blogEntry = _blogService.Add(null, request.Title, request.Body, request.CommentsDisabled);
             return Ok(blogEntry);
         }
 
@@ -54,7 +53,7 @@ namespace Blog.Features.Blog
         [Authorize(Roles = "admin")]
         public IActionResult Update(int blogEntryId, UpdateBlogEntryRequest request)
         {
-            var blogEntry = _blogService.Update(new SubItUser(), blogEntryId, request.Title, request.Body, request.CommentsDisabled);
+            var blogEntry = _blogService.Update(null, blogEntryId, request.Title, request.Body, request.CommentsDisabled);
             return Ok(blogEntry);
         }
 
@@ -64,7 +63,7 @@ namespace Blog.Features.Blog
         [Authorize(Roles = "admin")]
         public IActionResult Delete(int blogEntryId)
         {
-            if (_blogService.Delete(new SubItUser(), blogEntryId))
+            if (_blogService.Delete(null, blogEntryId))
                 return NoContent();
 
             return NotFound();
@@ -75,7 +74,7 @@ namespace Blog.Features.Blog
         [Route("{blogEntryId}/comments")]
         public IActionResult AddComment(int blogEntryId, [FromBody] AddCommentRequest request)
         {
-            var comment = _blogService.AddComment(new SubItUser(), blogEntryId, request.Email, RemoteIpAddress, request.Body);
+            var comment = _blogService.AddComment(null, blogEntryId, request.Email, RemoteIpAddress, request.Body);
             return Ok(comment);
         }
 
@@ -85,7 +84,7 @@ namespace Blog.Features.Blog
         [Authorize]
         public IActionResult DeleteComment(int blogEntryId, int commentId)
         {
-            if (_blogService.DeleteComment(new SubItUser(), blogEntryId, commentId))
+            if (_blogService.DeleteComment(null, blogEntryId, commentId))
                 return NoContent();
 
             return NotFound();

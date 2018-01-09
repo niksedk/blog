@@ -44,6 +44,9 @@ namespace Blog
                 };
             });
 
+            // ===== Add Identity ========
+            // services.AddIdentity<IdentityUser, IdentityRole>();            
+
             services.AddMvc();
 
             services.Configure<RazorViewEngineOptions>(options =>
@@ -84,7 +87,7 @@ namespace Blog
             }
 
             app.UseStaticFiles();
-
+            
             app.UseAuthentication();
 
             app.UseMvc(routes =>

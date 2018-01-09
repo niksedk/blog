@@ -1,19 +1,21 @@
 ﻿using System;
 using Blog.Features.Security.ViewModels;
+using Blog.Features.Shared;
 using Blog.Features.Shared.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Features.Security.Controllers
 {
     [Produces("application/json")]
     [Route("api/users")]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _userService = userService;
         }
