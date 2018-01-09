@@ -1,21 +1,34 @@
 <div *ngIf="blogEntry != null">
   <div class="card">
     <div class="card-block">
-      <h5 class="card-title">{{blogEntry.title}}</h5>
-      <div *ngIf="displayCommentsLink && blogEntry.commentsDisabled === false">
-        <div class="pull-right">
-          <a routerLink="blog/{{blogEntry.urlFriendlyId}}"> 
-            <span *ngIf="blogEntry.commentCount === 0">Add comment</span>
-            <span *ngIf="blogEntry.commentCount > 0">Comments</span>
-            <span class="badge badge-pill badge-primary">{{blogEntry.commentCount}}</span>
+
+      <!-- header -->
+      <div class="d-flex justify-content-between">
+
+        <!-- display title -->
+        <div>
+          <b>{{blogEntry.title}}</b>
+        </div>
+
+        <!-- display comments link  -->
+        <div *ngIf="displayCommentsLink">
+          <a routerLink="blog/{{blogEntry.urlFriendlyId}}">
+            <span *ngIf="blogEntry.commentCount === 0 && !blogEntry.commentsDisabled"> Add comment<span class="badge badge-pill badge-primary">{{blogEntry.commentCount}}</span> </span>
+            <span *ngIf="blogEntry.commentCount > 0">Comments <span class="badge badge-pill badge-primary">{{blogEntry.commentCount}}</span></span>
           </a>
         </div>
       </div>
-      <div *ngIf="displayCommentsLink && blogEntry.commentsDisabled === true">
-        <div class="pull-right"><a routerLink="blog/{{blogEntry.urlFriendlyId}}">Comments <span class="badge badge-pill badge-primary">{{blogEntry.commentCount}}</span></a></div>
-      </div>      
+
+      <!-- display time and author  -->
+      <small class="text-muted">
+        {{blogEntry.created | date : 'medium'}} by
+        <span *ngIf="blogEntry.email">
+          <a href="{{'mailto:' + blogEntry.email}}">{{blogEntry.name}}</a>
+        </span>
+        <span *ngIf="!blogEntry.email">{{blogEntry.name}}</span>
+      </small>
+
       <p class="card-text">{{blogEntry.body}}</p>
     </div>
   </div>
 </div>
-

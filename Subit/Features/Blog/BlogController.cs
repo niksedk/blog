@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SubIt.Data.Security;
+using SubIt.Features.Blog.Factories;
 using SubIt.Features.Blog.ViewModels;
 using SubIt.Features.Shared;
 
@@ -24,7 +26,7 @@ namespace SubIt.Features.Blog
         public IActionResult List(int fromDays = 0, int toDays = 100)
         {
             var list = _blogService.ListRecent(fromDays, toDays);
-            return Ok(list);
+            return Ok(BlogEntryViewModelFactory.Make(list));
         }
 
         [HttpGet]
@@ -32,13 +34,14 @@ namespace SubIt.Features.Blog
         [Route("{urlFriendlyId}")]
         public IActionResult Get(string urlFriendlyId)
         {
-            var list = _blogService.GetFull(urlFriendlyId);
-            return Ok(list);
+            var blogEntry = _blogService.GetFull(urlFriendlyId);
+            return Ok(BlogEntryViewModelFactory.Make(blogEntry));
         }
 
         [HttpPost]
         [EnableCors("AllowAll")]
         [Route("")]
+        [Authorize(Roles = "admin")]
         public IActionResult AddBlogEntry([FromBody] AddBlogEntryRequest request)
         {
             var blogEntry = _blogService.Add(new SubItUser(), request.Title, request.Body, request.CommentsDisabled);
@@ -48,6 +51,7 @@ namespace SubIt.Features.Blog
         [HttpPut]
         [EnableCors("AllowAll")]
         [Route("{blogEntryId}")]
+        [Authorize(Roles = "admin")]
         public IActionResult Update(int blogEntryId, UpdateBlogEntryRequest request)
         {
             var blogEntry = _blogService.Update(new SubItUser(), blogEntryId, request.Title, request.Body, request.CommentsDisabled);
@@ -57,6 +61,7 @@ namespace SubIt.Features.Blog
         [HttpDelete]
         [EnableCors("AllowAll")]
         [Route("{blogEntryId}")]
+        [Authorize(Roles = "admin")]
         public IActionResult Delete(int blogEntryId)
         {
             if (_blogService.Delete(new SubItUser(), blogEntryId))
@@ -77,6 +82,7 @@ namespace SubIt.Features.Blog
         [HttpDelete]
         [EnableCors("AllowAll")]
         [Route("{blogEntryId}/comments/{commentId}")]
+        [Authorize]
         public IActionResult DeleteComment(int blogEntryId, int commentId)
         {
             if (_blogService.DeleteComment(new SubItUser(), blogEntryId, commentId))

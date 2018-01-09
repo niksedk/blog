@@ -15,6 +15,7 @@ namespace SubIt.Data.Blog
         public string Body { get; set; }
         public SubItUser CreatedBy { get; set; }
         public string Email { get; set; }
+        public string Name { get; set; }
         public string IpAddress { get; set; }
 
         public DateTime Created { get; set; }

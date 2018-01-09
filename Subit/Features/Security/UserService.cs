@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SubIt.Data;
 using SubIt.Data.Security;
 
@@ -9,7 +10,7 @@ namespace SubIt.Features.Security
 {
     public class UserService : IUserService
     {
-        private IJwt _jwt;
+        private readonly IJwt _jwt;
         private readonly IPasswordHasher<SubItUser> _passwordHasher;
         private readonly SubItContext _context;
         private const int MaxWrongPasswordAttempts = 5;
@@ -66,8 +67,9 @@ namespace SubIt.Features.Security
             if (string.IsNullOrEmpty(email))
                 return null;
 
-            return _context.Users.FirstOrDefault(u => u.Email == email && u.DeletedTime == null);
+            return _context.Users.Include(p=>p.Claims).FirstOrDefault(u => u.Email == email && u.DeletedTime == null);
         }
+
         public List<SubItUser> GetUsers()
         {
             return _context.Users.Where(u => u.DeletedTime == null).OrderByDescending(u=>u.Created).ToList();
@@ -77,7 +79,7 @@ namespace SubIt.Features.Security
         {
             return _jwt.GenerateJsonWebToken(user);
         }
-
+        
         public bool Delete(int userId)
         {
             var user = _context.Users.FirstOrDefault(u => u.DeletedTime == null);

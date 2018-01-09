@@ -14,24 +14,42 @@ export class AccountService {
   constructor(private http: Http) {
   }
 
-  getUsers(): Observable<User[]> {
-    return this.http.get(this.baseUrl + '/users').map(res => <User[]>res.json());
+  public getUsers(): Observable<User[]> {
+    return this.http.get(this.baseUrl + '/users', { headers: this.createAuthorizationHeader() }).map(res => <User[]>res.json());
   }
 
-  deleteUser(userId: number) {
-    return this.http.delete(this.baseUrl + '/users/' + userId);
+  public deleteUser(userId: number) {
+    return this.http.delete(this.baseUrl + '/users/' + userId, { headers: this.createAuthorizationHeader() });
   }
 
-  login(email: string, password: string): Observable<TokenResponse> {
+  private setTokenResponse(tokenResponse: TokenResponse) {
+    localStorage.setItem('tokenResponse', JSON.stringify(tokenResponse));
+  }
+
+  public getTokenResponse(): TokenResponse {
+    const s = localStorage.getItem('tokenResponse');
+    const tokenResponse: TokenResponse = JSON.parse(s);
+    return tokenResponse;
+  }  
+
+  private createAuthorizationHeader() : Headers {
+    let headers = new Headers();
+    headers.append('Authorization', 'Bearer ' + this.getTokenResponse().accessToken); 
+    return headers;
+  }
+
+  public login(email: string, password: string): Observable<TokenResponse> {
     return this.http.post(this.baseUrl + '/users/login', { email, password })
       .map(res => {
         const json = res.json();
-        return {
+        const tokenResponse = {
           accessToken: json.access_token,
           refreshToken: json.refresh_token,
           tokenType: json.token_type,
           expiresIn: json.expires_in
         };
+        this.setTokenResponse(tokenResponse);
+        return tokenResponse;
       });
   }
 

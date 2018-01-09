@@ -18,6 +18,7 @@ namespace SubIt.Data
                 // users has not been seeded
                 var user = new SubItUser
                 {
+                    Name = "Nikolaj Olsson",
                     Email = "nikse.dk@gmail.com",
                     Created = DateTime.UtcNow,
                     Modified = DateTime.UtcNow,                    

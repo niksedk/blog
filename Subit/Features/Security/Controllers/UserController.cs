@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using SubIt.Features.Security.ViewModels;
@@ -20,6 +21,7 @@ namespace SubIt.Features.Security.Controllers
         [HttpGet]
         [EnableCors("AllowAll")]
         [Route("")]
+        [Authorize(Roles = "admin")]
         public IActionResult GetUsers()
         {
             var users = _userService.GetUsers();
@@ -29,6 +31,7 @@ namespace SubIt.Features.Security.Controllers
         [HttpDelete]
         [EnableCors("AllowAll")]
         [Route("{userId}")]
+        [Authorize(Roles = "admin")]
         public IActionResult DeleteUser(int userId)
         {
             if (_userService.Delete(userId))
