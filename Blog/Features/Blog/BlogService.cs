@@ -11,13 +11,13 @@ namespace Blog.Features.Blog
 {
     public class BlogService : IBlogService
     {
-        private readonly SubItContext _context;
-        public BlogService(SubItContext context)
+        private readonly BlogDbContext _context;
+        public BlogService(BlogDbContext context)
         {
             _context = context;
         }
 
-        public BlogComment AddComment(SubItUser user, int blogEntryId, string email, string ipAddress, string body, string name)
+        public BlogComment AddComment(BlogUser user, int blogEntryId, string email, string ipAddress, string body, string name)
         {
             var blogEntry = _context.BlogEntries.Include(blog => blog.Comments).FirstOrDefault(p => p.BlogEntryId == blogEntryId && !p.CommentsDisabled);
             if (blogEntry == null)
@@ -42,7 +42,7 @@ namespace Blog.Features.Blog
             return comment;
         }
 
-        public bool Delete(SubItUser user, int blogEntryId)
+        public bool Delete(BlogUser user, int blogEntryId)
         {
             var blogEntry = _context.BlogEntries.Include(blog => blog.Comments).FirstOrDefault(p => p.BlogEntryId == blogEntryId);
             if (blogEntry == null)
@@ -54,7 +54,7 @@ namespace Blog.Features.Blog
             return true;
         }
 
-        public bool DeleteComment(SubItUser user, int blogCommentId)
+        public bool DeleteComment(BlogUser user, int blogCommentId)
         {
             var blogEntry = _context.BlogEntries.Include(blog => blog.Comments).FirstOrDefault(p => p.Comments.Any(c => c.BlogCommentId == blogCommentId));
             if (blogEntry == null)
@@ -99,7 +99,7 @@ namespace Blog.Features.Blog
             return _context.BlogEntries.Include(p => p.CreatedBy).Include(p => p.Comments).Where(p => p.Created >= from && p.Created <= to).OrderByDescending(p => p.Created).ToList();
         }
 
-        public BlogEntry Add(SubItUser user, string title, string body, bool commentsDisabled)
+        public BlogEntry Add(BlogUser user, string title, string body, bool commentsDisabled)
         {
             var urlFriendlyId = UrlHelper.GenerateUrlFriendlyId(title);
             if (_context.BlogEntries.Any(p => p.UrlFriendlyId == urlFriendlyId))
@@ -121,7 +121,7 @@ namespace Blog.Features.Blog
             return blogEntry;
         }
 
-        public BlogEntry Update(SubItUser user, int blogEntryId, string title, string body, bool commentsDisabled)
+        public BlogEntry Update(BlogUser user, int blogEntryId, string title, string body, bool commentsDisabled)
         {
             var blogEntry = _context.BlogEntries.Include(p => p.CreatedBy).FirstOrDefault(p => p.BlogEntryId == blogEntryId);
             if (blogEntry == null)
@@ -136,7 +136,7 @@ namespace Blog.Features.Blog
             return blogEntry;
         }
 
-        public BlogComment UpdateComment(SubItUser user, int blogCommentId, string body)
+        public BlogComment UpdateComment(BlogUser user, int blogCommentId, string body)
         {
             var blogComment = _context.BlogComments.Include(p => p.CreatedBy).FirstOrDefault(p => p.BlogCommentId == blogCommentId);
             if (blogComment == null)

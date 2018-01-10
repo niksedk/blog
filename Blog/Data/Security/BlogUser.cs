@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Blog.Data.Security
 {
-    public class SubItUser
+    public class BlogUser
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -22,6 +22,6 @@ namespace Blog.Data.Security
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
 
-        public ICollection<SubItClaim> Claims { get; set; }
+        public ICollection<BlogClaim> Claims { get; set; }
     }
 }

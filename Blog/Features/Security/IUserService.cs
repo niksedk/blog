@@ -7,11 +7,11 @@ namespace Blog.Features.Security
     {
         string LoginRefreshToken(string refreshToken, string clientId);
         string LoginRefreshToken(string username, string password, string userAgent);
-        string LoginPassword(SubItUser user, string password, string userAgent);
-        SubItUser GetUser(string email);
-        SubItUser GetUser(int userId);
-        string GenerateJsonWebToken(SubItUser user);
-        List<SubItUser> GetUsers();
+        string LoginPassword(BlogUser user, string password, string userAgent);
+        BlogUser GetUser(string email);
+        BlogUser GetUser(int userId);
+        string GenerateJsonWebToken(BlogUser user);
+        List<BlogUser> GetUsers();
         bool Delete(int userId);
     }
 }

@@ -20,8 +20,8 @@ namespace Blog
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var context = services.GetRequiredService<SubItContext>();
-                    var passwordHasher = services.GetRequiredService<IPasswordHasher<SubItUser>>();
+                    var context = services.GetRequiredService<BlogDbContext>();
+                    var passwordHasher = services.GetRequiredService<IPasswordHasher<BlogUser>>();
                     Seed.Initialize(context, passwordHasher);
                 }
                 catch (Exception ex)

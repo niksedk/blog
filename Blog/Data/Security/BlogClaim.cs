@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Blog.Data.Security
 {
-    public class SubItClaim
+    public class BlogClaim
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

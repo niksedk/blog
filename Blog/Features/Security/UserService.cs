@@ -11,11 +11,11 @@ namespace Blog.Features.Security
     public class UserService : IUserService
     {
         private readonly IJwt _jwt;
-        private readonly IPasswordHasher<SubItUser> _passwordHasher;
-        private readonly SubItContext _context;
+        private readonly IPasswordHasher<BlogUser> _passwordHasher;
+        private readonly BlogDbContext _context;
         private const int MaxWrongPasswordAttempts = 5;
 
-        public UserService(IJwt jwt, IPasswordHasher<SubItUser> passwordHasher, SubItContext context)
+        public UserService(IJwt jwt, IPasswordHasher<BlogUser> passwordHasher, BlogDbContext context)
         {
             _jwt = jwt;
             _passwordHasher = passwordHasher;
@@ -29,7 +29,7 @@ namespace Blog.Features.Security
         /// <param name="password">Input password from UI</param>
         /// <param name="userAgent">useragent from browser</param>
         /// <returns>Error message, null if success</returns>
-        public string LoginPassword(SubItUser user, string password, string userAgent)
+        public string LoginPassword(BlogUser user, string password, string userAgent)
         {
             if (user.WrongPasswordAttempts > MaxWrongPasswordAttempts)
             {
@@ -62,24 +62,24 @@ namespace Blog.Features.Security
             return null;
         }
 
-        public SubItUser GetUser(string email)
+        public BlogUser GetUser(string email)
         {
             if (string.IsNullOrEmpty(email))
                 return null;
 
             return _context.Users.Include(p => p.Claims).FirstOrDefault(u => u.Email == email && u.DeletedTime == null);
         }
-        public SubItUser GetUser(int userId)
+        public BlogUser GetUser(int userId)
         {
             return _context.Users.Include(p => p.Claims).FirstOrDefault(u => u.UserId == userId && u.DeletedTime == null);
         }
 
-        public List<SubItUser> GetUsers()
+        public List<BlogUser> GetUsers()
         {
             return _context.Users.Where(u => u.DeletedTime == null).OrderByDescending(u=>u.Created).ToList();
         }
 
-        public string GenerateJsonWebToken(SubItUser user)
+        public string GenerateJsonWebToken(BlogUser user)
         {
             return _jwt.GenerateJsonWebToken(user);
         }

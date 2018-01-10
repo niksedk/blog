@@ -56,11 +56,11 @@ namespace Blog
             services.AddSingleton<IJwt, Jwt>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBlogService, BlogService>();
-            services.AddSingleton<IPasswordHasher<SubItUser>, PasswordHasher>();
+            services.AddSingleton<IPasswordHasher<BlogUser>, PasswordHasher>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // Entity Framework
-            services.AddDbContext<SubItContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<BlogDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

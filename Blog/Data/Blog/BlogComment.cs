@@ -13,7 +13,7 @@ namespace Blog.Data.Blog
         public int BlogCommentId { get; set; }
 
         public string Body { get; set; }
-        public SubItUser CreatedBy { get; set; }
+        public BlogUser CreatedBy { get; set; }
         public string Email { get; set; }
         public string Name { get; set; }
         public string IpAddress { get; set; }

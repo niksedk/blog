@@ -1,5 +1,4 @@
-﻿using Blog.Data.Security;
-using Blog.Features.Blog.Factories;
+﻿using Blog.Features.Blog.Factories;
 using Blog.Features.Blog.ViewModels;
 using Blog.Features.Security;
 using Blog.Features.Shared;
@@ -7,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 
 namespace Blog.Features.Blog
@@ -60,7 +58,7 @@ namespace Blog.Features.Blog
             if (string.IsNullOrWhiteSpace(request.Title) || string.IsNullOrWhiteSpace(request.Body))
                 return BadRequest();
 
-            var user = SubItUser;
+            var user = BlogUser;
             if (user == null || !user.Claims.Any(p => p.Key == "role" && p.Value == "admin"))
                 return Unauthorized();
 
@@ -77,7 +75,7 @@ namespace Blog.Features.Blog
             if (string.IsNullOrWhiteSpace(request.Title) || string.IsNullOrWhiteSpace(request.Body))
                 return BadRequest();
 
-            var user = SubItUser;
+            var user = BlogUser;
             if (user == null || !user.Claims.Any(p => p.Key == "role" && p.Value == "admin"))
                 return Unauthorized();
 
@@ -91,7 +89,7 @@ namespace Blog.Features.Blog
         [Authorize(Roles = "admin")]
         public IActionResult Delete(int blogEntryId)
         {
-            var user = SubItUser;
+            var user = BlogUser;
             if (user == null || !user.Claims.Any(p => p.Key == "role" && p.Value == "admin"))
                 return Unauthorized();
 
@@ -109,7 +107,7 @@ namespace Blog.Features.Blog
             if (string.IsNullOrWhiteSpace(request.Body))
                 return BadRequest();
 
-            var user = SubItUser;
+            var user = BlogUser;
             if (user == null && string.IsNullOrWhiteSpace(request.Name))
                 return BadRequest();
 
@@ -123,7 +121,7 @@ namespace Blog.Features.Blog
         [Authorize]
         public IActionResult DeleteComment(int commentId)
         {
-            var user = SubItUser;
+            var user = BlogUser;
             if (user == null || !user.Claims.Any(p => p.Key == "role" && p.Value == "admin"))
                 return Unauthorized();
 

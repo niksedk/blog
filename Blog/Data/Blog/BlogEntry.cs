@@ -21,7 +21,7 @@ namespace Blog.Data.Blog
         public string Title { get; set; }
         public string Body { get; set; }
         public bool CommentsDisabled { get; set; }
-        public SubItUser CreatedBy { get; set; }
+        public BlogUser CreatedBy { get; set; }
 
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }

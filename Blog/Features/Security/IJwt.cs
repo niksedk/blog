@@ -4,6 +4,6 @@ namespace Blog.Features.Security
 {
     public interface IJwt
     {
-        string GenerateJsonWebToken(SubItUser user);
+        string GenerateJsonWebToken(BlogUser user);
     }
 }

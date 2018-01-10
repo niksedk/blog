@@ -18,7 +18,7 @@ namespace Blog.Features.Security
             _config = config;
         }
 
-        public string  GenerateJsonWebToken(SubItUser user)
+        public string  GenerateJsonWebToken(BlogUser user)
         {
             var claims = new List<Claim>
             {

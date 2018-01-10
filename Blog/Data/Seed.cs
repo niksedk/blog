@@ -9,22 +9,22 @@ namespace Blog.Data
 {
     public class Seed
     {
-        public static void Initialize(SubItContext context, IPasswordHasher<SubItUser> passwordHasher)
+        public static void Initialize(BlogDbContext context, IPasswordHasher<BlogUser> passwordHasher)
         {
             context.Database.EnsureCreated();
 
             if (!context.Users.Any())
             {
-                // users has not been seeded
-                var user = new SubItUser
+                // Users has not been seeded
+                var user = new BlogUser
                 {
                     Name = "Admin",
                     Email = "no@email.com",
                     Created = DateTime.UtcNow,
                     Modified = DateTime.UtcNow,                    
-                    Claims = new List<SubItClaim>
+                    Claims = new List<BlogClaim>
                     {
-                        new SubItClaim { Key = "role", Value = "admin" }
+                        new BlogClaim { Key = "role", Value = "admin" }
                     }
                 };
                 user.PasswordHash = passwordHasher.HashPassword(user, "password");
@@ -34,7 +34,7 @@ namespace Blog.Data
 
             if (!context.BlogEntries.Any())
             {
-                // blog entries has not been seeded
+                // Blog entries has not been seeded
                 var user = context.Users.First();
                 for (int i = 1; i < 10; i++)
                 {

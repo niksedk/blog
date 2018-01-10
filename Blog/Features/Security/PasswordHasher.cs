@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Blog.Features.Security
 {
-    public class PasswordHasher : IPasswordHasher<SubItUser>
+    public class PasswordHasher : IPasswordHasher<BlogUser>
     {
-        public string HashPassword(SubItUser user, string password)
+        public string HashPassword(BlogUser user, string password)
         {
             return HashPasswordV1(password);
         }
 
-        public PasswordVerificationResult VerifyHashedPassword(SubItUser user, string hashedPassword, string providedPassword)
+        public PasswordVerificationResult VerifyHashedPassword(BlogUser user, string hashedPassword, string providedPassword)
         {
             // Convert the stored Base64 password to bytes
             byte[] decodedHashedPassword = Convert.FromBase64String(hashedPassword);

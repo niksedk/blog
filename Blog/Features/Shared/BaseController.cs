@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using Blog.Data.Security;
 using Blog.Features.Security;
@@ -52,7 +51,7 @@ namespace Blog.Features.Shared
             return default(T);
         }
 
-        public SubItUser SubItUser
+        public BlogUser BlogUser
         {
             get
             {
