@@ -2,14 +2,12 @@
 using Blog.Data;
 using Blog.Data.Security;
 using Blog.Features.Blog;
-using Blog.Features.Mvc;
 using Blog.Features.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,15 +42,7 @@ namespace Blog
                 };
             });
 
-            // ===== Add Identity ========
-            // services.AddIdentity<IdentityUser, IdentityRole>();            
-
             services.AddMvc();
-
-            services.Configure<RazorViewEngineOptions>(options =>
-            {
-                options.ViewLocationExpanders.Add(new CustomViewLocator());
-            });
 
             services.AddCors(o => o.AddPolicy("AllowAll", builder =>
             {
@@ -86,6 +76,7 @@ namespace Blog
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseDefaultFiles();
             app.UseStaticFiles();
             
             app.UseAuthentication();
@@ -96,6 +87,7 @@ namespace Blog
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }
