@@ -19,6 +19,7 @@ import { BlogEntryComponent } from './blog/blog-entry/blog-entry.component';
 import { BlogEntryWithCommentsComponent } from './blog/blog-entry-with-comments/blog-entry-with-comments.component';
 import { BlogManageComponent } from './admin/blog-manage/blog-manage.component';
 import { UserManageComponent } from './admin/user-manage/user-manage.component';
+import { CommentManageComponent } from './admin/comment-admin/comment-manage.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { UserManageComponent } from './admin/user-manage/user-manage.component';
     BlogEntryComponent,
     BlogEntryWithCommentsComponent,
     BlogManageComponent,
-    UserManageComponent
+    UserManageComponent,
+    CommentManageComponent
   ],
   imports: [
     BrowserModule,

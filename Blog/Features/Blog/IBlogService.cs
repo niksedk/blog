@@ -13,8 +13,9 @@ namespace Blog.Features.Blog
         bool Delete(SubItUser user, int blogEntryId);
 
         List<BlogComment> ListComments(int blogEntryId);
+        List<BlogComment> ListComments();
         BlogComment AddComment(SubItUser user, int blogEntryId, string email, string IpAddress, string body);
         BlogComment UpdateComment(SubItUser user, int blogCommentId, string body);
-        bool DeleteComment(SubItUser user, int blogEntryId, int blogCommentId);
+        bool DeleteComment(SubItUser user, int blogCommentId);
     }
 }

@@ -48,7 +48,7 @@ namespace Blog.Data
                         UrlFriendlyId = "welcome-no-" + i,
                         Comments = new List<BlogComment>
                         {
-                            new BlogComment {  Body = "First", Created = DateTime.UtcNow, Modified = DateTime.UtcNow }
+                            new BlogComment {  Body = "First", Email = "no@email.com", IpAddress  = "127.0.0.1", Created = DateTime.UtcNow, Modified = DateTime.UtcNow }
                         }
                     };
                     blogEntry.CommentCount = blogEntry.Comments.Count;

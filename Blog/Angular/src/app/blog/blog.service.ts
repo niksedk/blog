@@ -33,8 +33,12 @@ export class BlogService {
     return this.http.post<BlogEntry>(this.baseUrl, blogEntry);
   }
 
-  deleteComment(blogEntryId: number, blogCommentId: number) {
-    return this.http.delete(this.baseUrl + '/' + blogEntryId + '/comments/' + blogCommentId);
+  deleteComment(commentId: number) {
+    return this.http.delete(this.baseUrl + '/comments/' + commentId);
+  }
+
+  listComments(): Observable<BlogComment[]> {
+    return this.http.get<BlogComment[]>(this.baseUrl + '/comments');
   }
 
 }

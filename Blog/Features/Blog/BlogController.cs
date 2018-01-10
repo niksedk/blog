@@ -30,6 +30,15 @@ namespace Blog.Features.Blog
 
         [HttpGet]
         [EnableCors("AllowAll")]
+        [Route("comments")]
+        public IActionResult ListComments()
+        {
+            var list = _blogService.ListComments();
+            return Ok(list);
+        }
+
+        [HttpGet]
+        [EnableCors("AllowAll")]
         [Route("{urlFriendlyId}")]
         public IActionResult Get(string urlFriendlyId)
         {
@@ -80,11 +89,11 @@ namespace Blog.Features.Blog
 
         [HttpDelete]
         [EnableCors("AllowAll")]
-        [Route("{blogEntryId}/comments/{commentId}")]
+        [Route("comments/{commentId}")]
         [Authorize]
-        public IActionResult DeleteComment(int blogEntryId, int commentId)
+        public IActionResult DeleteComment(int commentId)
         {
-            if (_blogService.DeleteComment(null, blogEntryId, commentId))
+            if (_blogService.DeleteComment(null, commentId))
                 return NoContent();
 
             return NotFound();

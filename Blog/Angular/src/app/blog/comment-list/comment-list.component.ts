@@ -45,7 +45,7 @@ export class CommentListComponent implements OnInit {
   }
 
   public deleteComment(commentId: number) {
-    this.blogService.deleteComment(this.blogEntryWithComments.blogEntryId, commentId)
+    this.blogService.deleteComment(commentId)
     .subscribe(res => {
       console.log(res);
       console.log('comment deleted ' + commentId);

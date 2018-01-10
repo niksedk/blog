@@ -8,6 +8,7 @@ import { BlogEntryComponent } from './blog/blog-entry/blog-entry.component';
 import { BlogEntryWithCommentsComponent } from './blog/blog-entry-with-comments/blog-entry-with-comments.component';
 import { BlogManageComponent } from './admin/blog-manage/blog-manage.component';
 import { UserManageComponent } from './admin/user-manage/user-manage.component';
+import { CommentManageComponent  } from './admin/comment-admin/comment-manage.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,10 @@ const routes: Routes = [
   {
     path: 'admin/users',
     component: UserManageComponent
+  },
+  {
+    path: 'admin/comments',
+    component: CommentManageComponent
   }
 ];
 

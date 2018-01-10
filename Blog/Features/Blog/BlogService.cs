@@ -17,7 +17,7 @@ namespace Blog.Features.Blog
             _context = context;
         }
 
-        public BlogComment AddComment(SubItUser user, int blogEntryId, string email, string IpAddress, string body)
+        public BlogComment AddComment(SubItUser user, int blogEntryId, string email, string ipAddress, string body)
         {
             var blogEntry = _context.BlogEntries.Include(blog => blog.Comments).FirstOrDefault(p => p.BlogEntryId == blogEntryId && !p.CommentsDisabled);
             if (blogEntry == null)
@@ -28,7 +28,7 @@ namespace Blog.Features.Blog
                 Body = body,
                 Created = DateTime.UtcNow,
                 Modified = DateTime.UtcNow,
-                IpAddress = IpAddress,
+                IpAddress = ipAddress,
                 Email = email,
                 CreatedBy = user
             };
@@ -50,24 +50,24 @@ namespace Blog.Features.Blog
             return true;
         }
 
-        public bool DeleteComment(SubItUser user, int blogEntryId, int blogCommentId)
+        public bool DeleteComment(SubItUser user, int blogCommentId)
         {
-            var blogEntry = _context.BlogEntries.Include(blog => blog.Comments).FirstOrDefault(p => p.BlogEntryId == blogEntryId);
+            var blogEntry = _context.BlogEntries.Include(blog => blog.Comments).FirstOrDefault(p => p.Comments.Any(c => c.BlogCommentId == blogCommentId));
             if (blogEntry == null)
-                throw new ArgumentException("Blog entry not found", nameof(blogEntryId));
+                throw new ArgumentException("Blog entry not found for comment id", nameof(blogCommentId));
             var blogComment = blogEntry.Comments.FirstOrDefault(p => p.BlogCommentId == blogCommentId);
             if (blogComment == null)
                 return false;
 
             blogEntry.Comments.Remove(blogComment);
-            blogEntry.CommentCount = blogEntry.Comments.Count();
+            blogEntry.CommentCount = blogEntry.Comments.Count;
             _context.SaveChanges();
             return true;
         }
 
         public BlogEntry GetFull(string urlFriendlyId)
         {
-            var blogEntry = _context.BlogEntries.Include(blog => blog.Comments).Include(blog=>blog.CreatedBy).FirstOrDefault(p => p.UrlFriendlyId == urlFriendlyId);
+            var blogEntry = _context.BlogEntries.Include(blog => blog.Comments).Include(blog => blog.CreatedBy).FirstOrDefault(p => p.UrlFriendlyId == urlFriendlyId);
             if (blogEntry == null)
                 throw new ArgumentException("Blog entry not found", nameof(urlFriendlyId));
 
@@ -76,18 +76,23 @@ namespace Blog.Features.Blog
 
         public List<BlogComment> ListComments(int blogEntryId)
         {
-            var blogEntry = _context.BlogEntries.Include(p=>p.CreatedBy).FirstOrDefault(p => p.BlogEntryId == blogEntryId);
+            var blogEntry = _context.BlogEntries.Include(p => p.CreatedBy).FirstOrDefault(p => p.BlogEntryId == blogEntryId);
             if (blogEntry == null)
                 throw new ArgumentException("Blog entry not found", nameof(blogEntryId));
 
             return blogEntry.Comments.OrderBy(p => p.Created).ToList();
         }
 
+        public List<BlogComment> ListComments()
+        {
+            return _context.BlogComments.OrderBy(p => p.Created).ToList();
+        }
+
         public List<BlogEntry> ListRecent(int fromDaysBack, int toDaysBack)
         {
             var to = DateTime.UtcNow.AddDays(-Math.Min(fromDaysBack, toDaysBack));
             var from = DateTime.UtcNow.AddDays(-Math.Max(fromDaysBack, toDaysBack));
-            return _context.BlogEntries.Include(p=>p.CreatedBy).Include(p=>p.Comments).Where(p => p.Created >= from && p.Created <= to).OrderByDescending(p => p.Created).ToList();
+            return _context.BlogEntries.Include(p => p.CreatedBy).Include(p => p.Comments).Where(p => p.Created >= from && p.Created <= to).OrderByDescending(p => p.Created).ToList();
         }
 
         public BlogEntry Add(SubItUser user, string title, string body, bool commentsDisabled)
@@ -127,7 +132,7 @@ namespace Blog.Features.Blog
 
         public BlogEntry Update(SubItUser user, int blogEntryId, string title, string body, bool commentsDisabled)
         {
-            var blogEntry = _context.BlogEntries.Include(p=>p.CreatedBy).FirstOrDefault(p => p.BlogEntryId == blogEntryId);
+            var blogEntry = _context.BlogEntries.Include(p => p.CreatedBy).FirstOrDefault(p => p.BlogEntryId == blogEntryId);
             if (blogEntry == null)
                 throw new ArgumentException("Blog entry not found", nameof(blogEntryId));
 
@@ -142,7 +147,7 @@ namespace Blog.Features.Blog
 
         public BlogComment UpdateComment(SubItUser user, int blogCommentId, string body)
         {
-            var blogComment = _context.BlogComments.Include(p=>p.CreatedBy).FirstOrDefault(p => p.BlogCommentId == blogCommentId);
+            var blogComment = _context.BlogComments.Include(p => p.CreatedBy).FirstOrDefault(p => p.BlogCommentId == blogCommentId);
             if (blogComment == null)
                 throw new ArgumentException("Blog comment not found", nameof(blogCommentId));
 
