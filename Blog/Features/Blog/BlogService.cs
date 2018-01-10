@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Blog.Data;
 using Blog.Data.Blog;
 using Blog.Data.Security;
+using Blog.Features.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Features.Blog
@@ -101,7 +101,7 @@ namespace Blog.Features.Blog
 
         public BlogEntry Add(SubItUser user, string title, string body, bool commentsDisabled)
         {
-            var urlFriendlyId = GenerateUrlFriendlyId(title);
+            var urlFriendlyId = UrlHelper.GenerateUrlFriendlyId(title);
             if (_context.BlogEntries.Any(p => p.UrlFriendlyId == urlFriendlyId))
                 urlFriendlyId += "_";
             if (_context.BlogEntries.Any(p => p.UrlFriendlyId == urlFriendlyId))
@@ -119,19 +119,6 @@ namespace Blog.Features.Blog
             _context.BlogEntries.Add(blogEntry);
             _context.SaveChanges();
             return blogEntry;
-        }
-
-        private string GenerateUrlFriendlyId(string title)
-        {
-            var sb = new StringBuilder(title.Length);
-            foreach (var ch in title)
-            {
-                if (ch == ' ' || ch == '.')
-                    sb.Append('-');
-                else if ("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_".Contains(ch.ToString()))
-                    sb.Append(ch);
-            }
-            return sb.ToString();
         }
 
         public BlogEntry Update(SubItUser user, int blogEntryId, string title, string body, bool commentsDisabled)
