@@ -23,8 +23,8 @@ export class AccountComponent implements OnInit {
   login() {
     this.passwordsUsed.push('Logging in...');
     this.accountService.login(this.email, this.password).subscribe(res => {
-      this.passwordsUsed.push('AccessToken: ' + res.accessToken);
-      console.log('AccessToken: ' + res.accessToken);
+      this.passwordsUsed.push('AccessToken: ' + res.access_token);
+      console.log('AccessToken: ' + res.access_token);
     },
       err => {
         const details = err.json().error;

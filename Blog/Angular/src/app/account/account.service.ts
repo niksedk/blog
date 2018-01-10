@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptions, Headers, HttpModule } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TokenResponse } from './models/token-response';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -11,11 +11,11 @@ export class AccountService {
 
   baseUrl = 'http://localhost:54882/api'; // TODO: move to json setting
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
   }
 
   public getUsers(): Observable<User[]> {
-    return this.http.get(this.baseUrl + '/users', { headers: this.createAuthorizationHeader() }).map(res => <User[]>res.json());
+    return this.http.get<User[]>(this.baseUrl + '/users', { headers: this.createAuthorizationHeader() });
   }
 
   public deleteUser(userId: number) {
@@ -36,27 +36,16 @@ export class AccountService {
       localStorage.removeItem("tokenResponse")
   }
 
-  private createAuthorizationHeader() : Headers {
-    let headers = new Headers();
-    headers.append('Authorization', 'Bearer ' + this.getTokenResponse().accessToken); 
-    return headers;
+  private createAuthorizationHeader() : HttpHeaders {   
+    return new HttpHeaders().set('Authorization', 'Bearer ' + this.getTokenResponse().access_token);
   }
 
   public login(email: string, password: string): Observable<TokenResponse> {
-    return this.http.post(this.baseUrl + '/users/login', { email, password })
-      .map(res => {
-        const json = res.json();
-        const tokenResponse = {
-          accessToken: json.access_token,
-          refreshToken: json.refresh_token,
-          tokenType: json.token_type,
-          expiresIn: json.expires_in
-        };
-        this.setTokenResponse(tokenResponse);
-        return tokenResponse;
-      });
+    var tokenResponse = this.http.post<TokenResponse>(this.baseUrl + '/users/login', { email, password });    
+    tokenResponse.subscribe(res => {
+      this.setTokenResponse(res);
+    });
+    return tokenResponse;
   }
-
-
 
 }

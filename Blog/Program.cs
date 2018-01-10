@@ -37,6 +37,7 @@ namespace Blog
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseWebRoot("Angular/dist")
                 .Build();
     }
 }

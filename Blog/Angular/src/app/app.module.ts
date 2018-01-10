@@ -8,6 +8,10 @@ import { RegisterComponent } from './account/register/register.component';
 import { LoginComponent } from './account/login/login.component';
 import { AccountService } from './account/account.service';
 import { Http, HttpModule } from '@angular/http';
+
+//import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpInterceptor, HttpHandler, HttpRequest, HttpClient, HttpClientModule } from '@angular/common/http';
+
 import { CommentListComponent } from './blog/comment-list/comment-list.component';
 import { BlogService } from './blog/blog.service';
 import { BlogListComponent } from './blog/blog-list/blog-list.component';
@@ -33,7 +37,7 @@ import { UserManageComponent } from './admin/user-manage/user-manage.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpModule
+    HttpClientModule 
   ],
   providers: [AccountService, BlogService],
   bootstrap: [AppComponent]
