@@ -18,8 +18,8 @@ namespace Blog.Data
                 // users has not been seeded
                 var user = new SubItUser
                 {
-                    Name = "Nikolaj Olsson",
-                    Email = "nikse.dk@gmail.com",
+                    Name = "Admin",
+                    Email = "no@email.com",
                     Created = DateTime.UtcNow,
                     Modified = DateTime.UtcNow,                    
                     Claims = new List<SubItClaim>
@@ -35,12 +35,12 @@ namespace Blog.Data
             if (!context.BlogEntries.Any())
             {
                 // blog entries has not been seeded
-
+                var user = context.Users.First();
                 for (int i = 1; i < 10; i++)
                 {
                     var blogEntry = new BlogEntry
                     {
-                        CreatedBy = context.Users.First(),
+                        CreatedBy = user,
                         Title = "Welcome no" + i,
                         Body = "This is the an auto seeded blog post.",
                         Created = DateTime.UtcNow.AddDays(-i),

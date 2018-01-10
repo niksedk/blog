@@ -7,10 +7,14 @@ import { AccountComponent } from './account/account.component';
 import { RegisterComponent } from './account/register/register.component';
 import { LoginComponent } from './account/login/login.component';
 import { AccountService } from './account/account.service';
+import { TokenService } from './account/token.service';
 import { Http, HttpModule } from '@angular/http';
 
 //import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpInterceptor, HttpHandler, HttpRequest, HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './account/token-interceptor';
+
 
 import { CommentListComponent } from './blog/comment-list/comment-list.component';
 import { BlogService } from './blog/blog.service';
@@ -41,7 +45,15 @@ import { CommentManageComponent } from './admin/comment-admin/comment-manage.com
     FormsModule,
     HttpClientModule 
   ],
-  providers: [AccountService, BlogService],
+  providers: [
+    AccountService, 
+    BlogService,
+    TokenService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
