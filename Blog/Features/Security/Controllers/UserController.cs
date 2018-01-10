@@ -15,7 +15,8 @@ namespace Blog.Features.Security.Controllers
     {
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public UserController(IHttpContextAccessor httpContextAccessor,
+                              IUserService userService) : base(httpContextAccessor, userService)
         {
             _userService = userService;
         }

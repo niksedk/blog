@@ -9,8 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 export class RegisterComponent implements OnInit {
   email: string;
 
-  constructor(private route: ActivatedRoute) {
-    this.route.params.subscribe(res =>  this.email = res.email);
+  constructor() {
    }
 
   ngOnInit() {

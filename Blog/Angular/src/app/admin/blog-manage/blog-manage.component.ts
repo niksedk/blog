@@ -42,7 +42,6 @@ export class BlogManageComponent implements OnInit {
   public deleteBlogEntry(blogEntry: BlogEntry) {
     this.blogService.deleteBlogEntry(blogEntry.blogEntryId)
     .subscribe(res => {
-      console.log('blogEntry deleted ' + blogEntry.blogEntryId);
       this.blogEntries = this.blogEntries
       .map(blogEntries => blogEntries.filter(b => b.blogEntryId !== blogEntry.blogEntryId));
     });
@@ -51,7 +50,6 @@ export class BlogManageComponent implements OnInit {
   public addBlogEntry() {
     this.blogService.addBlogEntry(this.newBlogEntry)
     .subscribe(res => {
-      console.log('blogEntry added ' + this.newBlogEntry.title);
       this.blogEntries = this.blogService.list();
     });
   }  

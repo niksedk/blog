@@ -67,7 +67,11 @@ namespace Blog.Features.Security
             if (string.IsNullOrEmpty(email))
                 return null;
 
-            return _context.Users.Include(p=>p.Claims).FirstOrDefault(u => u.Email == email && u.DeletedTime == null);
+            return _context.Users.Include(p => p.Claims).FirstOrDefault(u => u.Email == email && u.DeletedTime == null);
+        }
+        public SubItUser GetUser(int userId)
+        {
+            return _context.Users.Include(p => p.Claims).FirstOrDefault(u => u.UserId == userId && u.DeletedTime == null);
         }
 
         public List<SubItUser> GetUsers()

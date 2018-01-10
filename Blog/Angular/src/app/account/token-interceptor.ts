@@ -5,11 +5,9 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor
-  } from '@angular/common/http';
+} from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { TokenService } from './token.service';
-// import Accountservice = require("./account.service");
-// import AccountService = Accountservice.AccountService;
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -18,9 +16,7 @@ export class TokenInterceptor implements HttpInterceptor {
     const accessToken = this.tokenService.getTokenResponse().access_token;
     if (accessToken) {
       request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${accessToken}`
-        }
+        setHeaders: { Authorization: `Bearer ${accessToken}` }
       });
     }
     return next.handle(request);

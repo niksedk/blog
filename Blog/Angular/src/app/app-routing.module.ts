@@ -16,7 +16,7 @@ const routes: Routes = [
     component: BlogListComponent
   },
   {
-    path: 'register/:email',
+    path: 'register',
     component: RegisterComponent
   },
   {

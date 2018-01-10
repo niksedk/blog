@@ -14,7 +14,7 @@ namespace Blog.Features.Blog
 
         List<BlogComment> ListComments(int blogEntryId);
         List<BlogComment> ListComments();
-        BlogComment AddComment(SubItUser user, int blogEntryId, string email, string IpAddress, string body);
+        BlogComment AddComment(SubItUser user, int blogEntryId, string email, string IpAddress, string body, string name);
         BlogComment UpdateComment(SubItUser user, int blogCommentId, string body);
         bool DeleteComment(SubItUser user, int blogCommentId);
     }

@@ -16,35 +16,19 @@ export class AccountService {
   }
 
   public getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.baseUrl + '/users');
-//    return this.http.get<User[]>(this.baseUrl + '/users', { headers: this.createAuthorizationHeader() });
+    return this.http.get<User[]>(`${this.baseUrl}/users`);
   }
 
   public deleteUser(userId: number) {
-    return this.http.delete(this.baseUrl + '/users/' + userId);
-//    return this.http.delete(this.baseUrl + '/users/' + userId, { headers: this.createAuthorizationHeader() });
+    return this.http.delete(`${this.baseUrl}/users/${userId}`);
   }
-
-  // private setTokenResponse(tokenResponse: TokenResponse) {
-  //   localStorage.setItem('tokenResponse', JSON.stringify(tokenResponse));
-  // }
-
-  // public getTokenResponse(): TokenResponse {
-  //   const s = localStorage.getItem('tokenResponse');
-  //   const tokenResponse: TokenResponse = JSON.parse(s);
-  //   return tokenResponse;
-  // }  
 
   public logout() {
       localStorage.removeItem("tokenResponse")
   }
 
-  // private createAuthorizationHeader() : HttpHeaders {   
-  //   return new HttpHeaders().set('Authorization', 'Bearer ' + this.getTokenResponse().access_token);
-  // }
-
   public login(email: string, password: string): Observable<TokenResponse> {
-    var tokenResponse = this.http.post<TokenResponse>(this.baseUrl + '/users/login', { email, password });    
+    var tokenResponse = this.http.post<TokenResponse>(`${this.baseUrl}/users/login`, { email, password });    
     tokenResponse.subscribe(res => {
       this.tokenService.setTokenResponse(res);
     });

@@ -22,7 +22,6 @@ export class UserManageComponent implements OnInit {
   public deleteUser(user: User) {
     this.accountService.deleteUser(user.userId)
     .subscribe(res => {
-      console.log('User deleted ' + user.userId);
       this.users = this.users.map(u => u.filter(b => b.userId !== user.userId));
     });
   }

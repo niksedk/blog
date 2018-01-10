@@ -16,20 +16,19 @@ export class AccountComponent implements OnInit {
   constructor(private accountService: AccountService) { }
 
   ngOnInit() {
-      this.email = 'nikse.dk@gmail.com';
-      this.password = 'password';
+    this.email = 'no@email.com';
+    this.password = 'password';
   }
 
   login() {
     this.passwordsUsed.push('Logging in...');
     this.accountService.login(this.email, this.password).subscribe(res => {
-      this.passwordsUsed.push('AccessToken: ' + res.access_token);
-      console.log('AccessToken: ' + res.access_token);
+      this.passwordsUsed.push(`AccessToken: ${res.access_token}`);
     },
       err => {
         const details = err.json().error;
         this.passwordsUsed.push(details);
-        console.log('Error message: ' + details);
+        console.log(`Error message: ${details}`);
       }
     );
   }

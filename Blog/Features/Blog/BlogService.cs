@@ -17,20 +17,24 @@ namespace Blog.Features.Blog
             _context = context;
         }
 
-        public BlogComment AddComment(SubItUser user, int blogEntryId, string email, string ipAddress, string body)
+        public BlogComment AddComment(SubItUser user, int blogEntryId, string email, string ipAddress, string body, string name)
         {
             var blogEntry = _context.BlogEntries.Include(blog => blog.Comments).FirstOrDefault(p => p.BlogEntryId == blogEntryId && !p.CommentsDisabled);
             if (blogEntry == null)
                 throw new ArgumentException("Blog entry not found or comments is disabled", nameof(blogEntryId));
 
-            var comment = new BlogComment()
+            if (user != null)
+                name = null;
+
+            var comment = new BlogComment
             {
                 Body = body,
                 Created = DateTime.UtcNow,
                 Modified = DateTime.UtcNow,
                 IpAddress = ipAddress,
                 Email = email,
-                CreatedBy = user
+                CreatedBy = user,
+                Name = name
             };
             blogEntry.Comments.Add(comment);
             blogEntry.CommentCount = blogEntry.Comments.Count();
@@ -85,7 +89,7 @@ namespace Blog.Features.Blog
 
         public List<BlogComment> ListComments()
         {
-            return _context.BlogComments.OrderBy(p => p.Created).ToList();
+            return _context.BlogComments.OrderByDescending(p => p.Created).ToList();
         }
 
         public List<BlogEntry> ListRecent(int fromDaysBack, int toDaysBack)

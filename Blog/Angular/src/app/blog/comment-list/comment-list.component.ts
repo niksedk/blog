@@ -38,7 +38,6 @@ export class CommentListComponent implements OnInit {
 
   public addComment() {
     this.blogService.addComment(this.newComment).subscribe(res => {
-      console.log(res);
       this.blogEntryWithComments.comments.push(res);
       this.resetNewComment();
     });
@@ -47,8 +46,6 @@ export class CommentListComponent implements OnInit {
   public deleteComment(commentId: number) {
     this.blogService.deleteComment(commentId)
     .subscribe(res => {
-      console.log(res);
-      console.log('comment deleted ' + commentId);
       this.blogEntryWithComments.comments = this.blogEntryWithComments.comments
       .filter((c) => c.blogCommentId !== commentId);
     });

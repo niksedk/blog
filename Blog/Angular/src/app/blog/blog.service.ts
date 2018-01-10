@@ -18,15 +18,15 @@ export class BlogService {
   }
 
   getFullBlogEntry(friendlyId: string): Observable<BlogEntryFull> {
-    return this.http.get<BlogEntryFull>(this.baseUrl + '/' + friendlyId);
+    return this.http.get<BlogEntryFull>(`${this.baseUrl}/${friendlyId}`);
   }
 
   deleteBlogEntry(blogEntryId: number) {
-    return this.http.delete(this.baseUrl + '/' + blogEntryId);
+    return this.http.delete(`${this.baseUrl}/${blogEntryId}`);
   }
 
   addComment(comment: BlogComment): Observable<BlogComment> {
-    return this.http.post<BlogComment>(this.baseUrl + '/' + comment.blogEntryId + '/comments', comment);
+    return this.http.post<BlogComment>(`${this.baseUrl}/${comment.blogEntryId}/comments`, comment);
   }
 
   addBlogEntry(blogEntry: BlogEntry): Observable<BlogEntry> {
@@ -34,11 +34,11 @@ export class BlogService {
   }
 
   deleteComment(commentId: number) {
-    return this.http.delete(this.baseUrl + '/comments/' + commentId);
+    return this.http.delete(`${this.baseUrl}/comments/${commentId}`);
   }
 
   listComments(): Observable<BlogComment[]> {
-    return this.http.get<BlogComment[]>(this.baseUrl + '/comments');
+    return this.http.get<BlogComment[]>(`${this.baseUrl}/comments`);
   }
 
 }

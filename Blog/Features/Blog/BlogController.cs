@@ -1,10 +1,14 @@
-﻿using Blog.Features.Blog.Factories;
+﻿using Blog.Data.Security;
+using Blog.Features.Blog.Factories;
 using Blog.Features.Blog.ViewModels;
+using Blog.Features.Security;
 using Blog.Features.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 
 namespace Blog.Features.Blog
 {
@@ -14,7 +18,8 @@ namespace Blog.Features.Blog
     {
         private readonly IBlogService _blogService;
 
-        public BlogController(IBlogService blogService, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public BlogController(IBlogService blogService, IHttpContextAccessor httpContextAccessor, 
+                              IUserService userService) : base(httpContextAccessor, userService)
         {
             _blogService = blogService;
         }
@@ -52,7 +57,14 @@ namespace Blog.Features.Blog
         [Authorize(Roles = "admin")]
         public IActionResult AddBlogEntry([FromBody] AddBlogEntryRequest request)
         {
-            var blogEntry = _blogService.Add(null, request.Title, request.Body, request.CommentsDisabled);
+            if (string.IsNullOrWhiteSpace(request.Title) || string.IsNullOrWhiteSpace(request.Body))
+                return BadRequest();
+
+            var user = SubItUser;
+            if (user == null || !user.Claims.Any(p => p.Key == "role" && p.Value == "admin"))
+                return Unauthorized();
+
+            var blogEntry = _blogService.Add(user, request.Title, request.Body, request.CommentsDisabled);
             return Ok(blogEntry);
         }
 
@@ -62,7 +74,14 @@ namespace Blog.Features.Blog
         [Authorize(Roles = "admin")]
         public IActionResult Update(int blogEntryId, UpdateBlogEntryRequest request)
         {
-            var blogEntry = _blogService.Update(null, blogEntryId, request.Title, request.Body, request.CommentsDisabled);
+            if (string.IsNullOrWhiteSpace(request.Title) || string.IsNullOrWhiteSpace(request.Body))
+                return BadRequest();
+
+            var user = SubItUser;
+            if (user == null || !user.Claims.Any(p => p.Key == "role" && p.Value == "admin"))
+                return Unauthorized();
+
+            var blogEntry = _blogService.Update(user, blogEntryId, request.Title, request.Body, request.CommentsDisabled);
             return Ok(blogEntry);
         }
 
@@ -72,7 +91,11 @@ namespace Blog.Features.Blog
         [Authorize(Roles = "admin")]
         public IActionResult Delete(int blogEntryId)
         {
-            if (_blogService.Delete(null, blogEntryId))
+            var user = SubItUser;
+            if (user == null || !user.Claims.Any(p => p.Key == "role" && p.Value == "admin"))
+                return Unauthorized();
+
+            if (_blogService.Delete(user, blogEntryId))
                 return NoContent();
 
             return NotFound();
@@ -83,7 +106,14 @@ namespace Blog.Features.Blog
         [Route("{blogEntryId}/comments")]
         public IActionResult AddComment(int blogEntryId, [FromBody] AddCommentRequest request)
         {
-            var comment = _blogService.AddComment(null, blogEntryId, request.Email, RemoteIpAddress, request.Body);
+            if (string.IsNullOrWhiteSpace(request.Body))
+                return BadRequest();
+
+            var user = SubItUser;
+            if (user == null && string.IsNullOrWhiteSpace(request.Name))
+                return BadRequest();
+
+            var comment = _blogService.AddComment(user, blogEntryId, request.Email, RemoteIpAddress, request.Body, request.Name);
             return Ok(comment);
         }
 
@@ -93,7 +123,11 @@ namespace Blog.Features.Blog
         [Authorize]
         public IActionResult DeleteComment(int commentId)
         {
-            if (_blogService.DeleteComment(null, commentId))
+            var user = SubItUser;
+            if (user == null || !user.Claims.Any(p => p.Key == "role" && p.Value == "admin"))
+                return Unauthorized();
+
+            if (_blogService.DeleteComment(user, commentId))
                 return NoContent();
 
             return NotFound();
