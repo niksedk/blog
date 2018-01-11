@@ -9,28 +9,9 @@ import 'rxjs/add/operator/catch';
 })
 export class AccountComponent implements OnInit {
 
-  email: string;
-  password: string;
-  passwordsUsed = [];
-
   constructor(private accountService: AccountService) { }
 
   ngOnInit() {
-    this.email = 'no@email.com';
-    this.password = 'password';
-  }
-
-  login() {
-    this.passwordsUsed.push('Logging in...');
-    this.accountService.login(this.email, this.password).subscribe(res => {
-      this.passwordsUsed.push(`AccessToken: ${res.access_token}`);
-    },
-      err => {
-        const details = err.json().error;
-        this.passwordsUsed.push(details);
-        console.log(`Error message: ${details}`);
-      }
-    );
   }
 
 }
