@@ -13,14 +13,17 @@ export class LoginComponent implements OnInit {
 
   email: string;
   password: string;
+  loginErrorMessage: string;
 
   constructor(private accountService: AccountService,
-              private router: Router) { }
+              private router: Router) { 
+  }
 
   ngOnInit() {
   }
 
   public login() {
+    this.loginErrorMessage = null;
     this.accountService.login(this.email, this.password)
       .subscribe(res => {
         this.router.navigate(['']);
@@ -28,16 +31,20 @@ export class LoginComponent implements OnInit {
       (err: HttpErrorResponse) => {
         if (err.error instanceof Error) {
           // A client-side or network error occurred. Handle it accordingly.
-          console.log('An error occurred:', err.error.message);
+          if (err.error.message)
+            this.loginErrorMessage = err.error.message;
+          else
+            this.loginErrorMessage = 'Unknown error occured :(';
         } else {
           // The backend returned an unsuccessful response code.
           // The response body may contain clues as to what went wrong,
-          console.log(`Backend returned code ${err.status}, body was: ${err.error.error}`);
+          this.loginErrorMessage = err.error.message;
         }
       });
   }
 
   public logout() {
+    this.loginErrorMessage = null;
     this.accountService.logout();
   }  
 

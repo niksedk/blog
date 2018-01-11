@@ -33,7 +33,7 @@ namespace Blog.Features.Security
         {
             if (user.WrongPasswordAttempts > MaxWrongPasswordAttempts)
             {
-                return "Account has been locked do to too many wrong login attempts - reset of password required"; // TODO: auto-send password reset email
+                return "Account has been locked due to too many wrong login attempts - reset of password required"; // TODO: auto-send password reset email
             }
 
             var success = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password) == PasswordVerificationResult.Success;
