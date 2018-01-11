@@ -73,7 +73,7 @@ namespace Blog
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Home/Message");
             }
 
             app.UseDefaultFiles();

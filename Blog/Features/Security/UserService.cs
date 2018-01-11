@@ -28,7 +28,7 @@ namespace Blog.Features.Security
         /// <param name="user">User</param>
         /// <param name="password">Input password from UI</param>
         /// <param name="userAgent">useragent from browser</param>
-        /// <returns>Error message, null if success</returns>
+        /// <returns>Message message, null if success</returns>
         public string LoginPassword(BlogUser user, string password, string userAgent)
         {
             if (user.WrongPasswordAttempts > MaxWrongPasswordAttempts)

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../account.service';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -13,19 +14,26 @@ export class LoginComponent implements OnInit {
   password: string;
 
   constructor(private accountService: AccountService,
-              private router: Router) { }
+    private router: Router) { }
 
   ngOnInit() {
   }
 
   login() {
-    this.accountService.login(this.email, this.password).subscribe(res => {
-      this.router.navigate(['']);
+    this.accountService.login(this.email, this.password)
+      .subscribe(res => {
+        this.router.navigate(['']);
       },
-      err => {
-       // console.log(`Error message: ${err.error.error}`);
-      }
-    );
+      (err: HttpErrorResponse) => {
+        if (err.error instanceof Error) {
+          // A client-side or network error occurred. Handle it accordingly.
+          console.log('An error occurred:', err.error.message);
+        } else {
+          // The backend returned an unsuccessful response code.
+          // The response body may contain clues as to what went wrong,
+          console.log(`Backend returned code ${err.status}, body was: ${err.error.error}`);
+        }
+      });
   }
 
 }

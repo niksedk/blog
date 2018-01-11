@@ -6,13 +6,13 @@ namespace Blog.Features.Shared.ViewModels
         {
 
         }
-        public ErrorViewModel(string error, string fieldName = null)
+        public ErrorViewModel(string message, string fieldName = null)
         {
-            Error = error;
+            Message = message;
             FieldName = fieldName;
         }
 
-        public string Error { get; set; }
+        public string Message { get; set; }
         public string FieldName { get; set; }
 
     }

@@ -55,7 +55,7 @@ namespace Blog.Features.Security.Controllers
                 return BadRequest(new ErrorViewModel($"{nameof(request.Email)} is not valid", nameof(request.Email)));
 
             if (string.IsNullOrWhiteSpace(request.Password))
-                return BadRequest(new ErrorViewModel { Error = $"{nameof(request.Password)} cannot be empty" });
+                return BadRequest(new ErrorViewModel { Message = $"{nameof(request.Password)} cannot be empty" });
 
             // Trim spaces from name + email
             request.Name = request.Name.Trim();
