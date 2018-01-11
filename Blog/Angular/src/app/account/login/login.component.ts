@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../account.service';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { TokenService } from '../token.service';
 
 @Component({
   selector: 'app-login',
@@ -14,12 +15,12 @@ export class LoginComponent implements OnInit {
   password: string;
 
   constructor(private accountService: AccountService,
-    private router: Router) { }
+              private router: Router) { }
 
   ngOnInit() {
   }
 
-  login() {
+  public login() {
     this.accountService.login(this.email, this.password)
       .subscribe(res => {
         this.router.navigate(['']);
@@ -35,5 +36,9 @@ export class LoginComponent implements OnInit {
         }
       });
   }
+
+  public logout() {
+    this.accountService.logout();
+  }  
 
 }

@@ -16,8 +16,8 @@ namespace Blog.Features.Blog
     {
         private readonly IBlogService _blogService;
 
-        public BlogController(IBlogService blogService, 
-                              IHttpContextAccessor httpContextAccessor, 
+        public BlogController(IBlogService blogService,
+                              IHttpContextAccessor httpContextAccessor,
                               IUserService userService) : base(httpContextAccessor, userService)
         {
             _blogService = blogService;
@@ -39,7 +39,7 @@ namespace Blog.Features.Blog
         public IActionResult ListComments()
         {
             var list = _blogService.ListComments();
-            return Ok(list);
+            return Ok(BlogCommentViewModelFactory.Make(list));
         }
 
         [HttpGet]
@@ -65,7 +65,7 @@ namespace Blog.Features.Blog
                 return Unauthorized();
 
             var blogEntry = _blogService.Add(user, request.Title, request.Body, request.CommentsDisabled);
-            return Ok(blogEntry);
+            return Ok(BlogEntryViewModelFactory.Make(blogEntry));
         }
 
         [HttpPut]
@@ -82,7 +82,7 @@ namespace Blog.Features.Blog
                 return Unauthorized();
 
             var blogEntry = _blogService.Update(user, blogEntryId, request.Title, request.Body, request.CommentsDisabled);
-            return Ok(blogEntry);
+            return Ok(BlogEntryViewModelFactory.Make(blogEntry));
         }
 
         [HttpDelete]
@@ -114,7 +114,7 @@ namespace Blog.Features.Blog
                 return BadRequest();
 
             var comment = _blogService.AddComment(user, blogEntryId, request.Email, RemoteIpAddress, request.Body, request.Name);
-            return Ok(comment);
+            return Ok(BlogCommentViewModelFactory.Make(comment));
         }
 
         [HttpDelete]

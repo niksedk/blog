@@ -4,9 +4,9 @@ using Blog.Features.Blog.ViewModels;
 
 namespace Blog.Features.Blog.Factories
 {
-    public static class BlogCommentViewModelFactory
+    internal static class BlogCommentViewModelFactory
     {
-        public static ICollection<BlogCommentViewModel> Make(ICollection<BlogComment> blogEntryComments)
+        internal static ICollection<BlogCommentViewModel> Make(ICollection<BlogComment> blogEntryComments)
         {
             var list = new List<BlogCommentViewModel>(blogEntryComments.Count);
             foreach (var blogComment in blogEntryComments)
@@ -16,9 +16,9 @@ namespace Blog.Features.Blog.Factories
             return list;
         }
 
-        private static BlogCommentViewModel Make(BlogComment blogComment)
+        internal static BlogCommentViewModel Make(BlogComment blogComment)
         {
-            return new BlogCommentViewModel
+            var vm = new BlogCommentViewModel
             {
                  Name = blogComment.CreatedBy != null ? blogComment.CreatedBy.Name : blogComment.Name,
                  Modified = blogComment.Modified,
@@ -28,6 +28,12 @@ namespace Blog.Features.Blog.Factories
                  BlogCommentId = blogComment.BlogCommentId,
                  Email = blogComment.Email,
             };
+            if (blogComment.CreatedBy != null)
+            {
+                vm.Name = blogComment.CreatedBy.Name;
+                vm.Email = blogComment.CreatedBy.Email;
+            }
+            return vm;
         }
     }
 }

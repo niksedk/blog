@@ -8,7 +8,7 @@ namespace Blog.Features.Blog.Factories
     {
         public static BlogEntryViewModel Make(BlogEntry blogEntry)
         {
-            return new BlogEntryViewModel
+            var vm = new BlogEntryViewModel
             {
                 Name = blogEntry.CreatedBy.Name,
                 Email = blogEntry.CreatedBy.Email,
@@ -22,7 +22,8 @@ namespace Blog.Features.Blog.Factories
                 Title = blogEntry.Title,
                 UrlFriendlyId = blogEntry.UrlFriendlyId,
                 UserId = blogEntry.CreatedBy.UserId
-            };
+            };        
+            return vm;
         }
 
         internal static List<BlogEntryViewModel> Make(List<BlogEntry> blogEntries)

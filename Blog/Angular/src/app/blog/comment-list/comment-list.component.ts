@@ -5,6 +5,7 @@ import { BlogEntryFull } from '../models/blog-entry-full';
 import { BlogService } from '../blog.service';
 import { BlogComment } from '../models/blog-comment';
 import { BlogEntryComponent } from '../blog-entry/blog-entry.component';
+import { TokenService } from '../../account/token.service';
 
 @Component({
   selector: 'app-comment-list',
@@ -15,8 +16,16 @@ export class CommentListComponent implements OnInit {
   @Input() blogEntryWithComments: BlogEntryFull;
 
   public newComment: BlogComment;
+  public hasValidToken: boolean;
+  public isAdministrator: boolean;
+  public currentUserId: number;
+  public currentName: string;
 
-  constructor(private blogService: BlogService) {
+  constructor(private blogService: BlogService, tokenService: TokenService) {
+    this.hasValidToken = tokenService.hasValidToken(); 
+    this.isAdministrator = tokenService.isAdministrator();
+    this.currentUserId = tokenService.getTokenUserId();
+    this.currentName = tokenService.getTokenName();
   }
 
   ngOnInit() {

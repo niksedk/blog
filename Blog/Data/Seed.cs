@@ -24,7 +24,9 @@ namespace Blog.Data
                     Modified = DateTime.UtcNow,                    
                     Claims = new List<BlogClaim>
                     {
-                        new BlogClaim { Key = "role", Value = "admin" }
+                        new BlogClaim { Key = "role", Value = "admin" },
+                        new BlogClaim { Key = "role", Value = "god" },
+                        new BlogClaim { Key = "role", Value = "master" },
                     }
                 };
                 user.PasswordHash = passwordHasher.HashPassword(user, "password");
@@ -48,7 +50,7 @@ namespace Blog.Data
                         UrlFriendlyId = "welcome-no-" + i,
                         Comments = new List<BlogComment>
                         {
-                            new BlogComment {  Body = "First", Email = "no@email.com", IpAddress  = "127.0.0.1", Created = DateTime.UtcNow, Modified = DateTime.UtcNow }
+                            new BlogComment {  Body = "First", Name= $"Benny {i}",  Email = "no@email.com", IpAddress  = "127.0.0.1", Created = DateTime.UtcNow, Modified = DateTime.UtcNow }
                         }
                     };
                     blogEntry.CommentCount = blogEntry.Comments.Count;

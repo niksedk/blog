@@ -27,10 +27,6 @@ export class AccountService {
     return this.http.post<User[]>(`${this.baseUrl}/users/register`, { name, email, showEmail, imageLink, password });
   }
 
-  public logout() {
-    localStorage.removeItem("tokenResponse")
-  }
-
   public login(email: string, password: string): Observable<TokenResponse> {
     var tokenResponse = this.http.post<TokenResponse>(`${this.baseUrl}/users/login`, { email, password });
     tokenResponse.subscribe(res => {
@@ -39,4 +35,7 @@ export class AccountService {
     return tokenResponse;
   }
 
+  public logout() {
+    this.tokenService.logout();
+  }
 }

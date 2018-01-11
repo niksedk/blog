@@ -71,7 +71,13 @@ namespace Blog.Features.Blog
 
         public BlogEntry GetFull(string urlFriendlyId)
         {
-            var blogEntry = _context.BlogEntries.Include(blog => blog.Comments).Include(blog => blog.CreatedBy).FirstOrDefault(p => p.UrlFriendlyId == urlFriendlyId);
+            var blogEntry = _context.BlogEntries
+                .Include(blog => blog.Comments)
+                    .ThenInclude(p=>p.CreatedBy)
+                .Include(blog => blog.Comments)
+                .Include(blog => blog.CreatedBy)
+                .FirstOrDefault(p => p.UrlFriendlyId == urlFriendlyId);
+
             if (blogEntry == null)
                 throw new ArgumentException("Blog entry not found", nameof(urlFriendlyId));
 
