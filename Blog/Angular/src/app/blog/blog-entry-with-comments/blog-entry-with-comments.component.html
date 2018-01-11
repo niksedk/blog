@@ -1,6 +1,5 @@
 <div *ngIf="blogEntryWithComments != null">
     <app-blog-entry [blogEntry]="blogEntryWithComments" [displayCommentsLink]="false"></app-blog-entry>
     <br />
-    <br />
     <app-comment-list [blogEntryWithComments]="blogEntryWithComments"></app-comment-list>
   </div>

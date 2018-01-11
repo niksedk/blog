@@ -2,8 +2,28 @@
   <div *ngFor="let item of blogEntryWithComments?.comments">
     <div class="card">
       <div class="card-block">
-        <button type="button" class="btn btn-link" (click)="deleteComment(item.blogCommentId)">Delete</button>
-        <p class="card-text">{{item.body}}</p>
+
+        <div class="d-flex justify-content-between">
+
+          <!-- display title -->
+          <div>
+            <!-- display time and author  -->
+            <small class="text-muted">
+              {{blogEntry.created | date : 'medium'}} by
+              <span *ngIf="blogEntry.email">
+                <a href="{{'mailto:' + blogEntry.email}}">{{blogEntry.name}}</a>
+              </span>
+              <span *ngIf="!blogEntry.email">{{blogEntry.name}}</span>
+            </small>
+            {{item | json}}
+          </div>
+
+          <!-- display comments link  -->
+          <div>
+            <button type="button" class="btn btn-link" (click)="deleteComment(item.blogCommentId)">Delete</button>
+          </div>
+        </div>
+        {{item.body}}
       </div>
     </div>
     <br />
@@ -27,7 +47,7 @@
         <label for="name">Name</label>
         <input type="text" class="form-control" id="name" name="name" [(ngModel)]="newComment.name" placeholder="Enter name">
       </div>
-      <button type="submit" class="btn btn-primary" (click)="addComment()">Add comment</button>
+      <button type="submit" class="btn btn-primary" (click)="addComment()">Add comment2</button>
     </form>
   </div>
 </div>
