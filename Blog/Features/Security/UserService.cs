@@ -76,14 +76,14 @@ namespace Blog.Features.Security
 
         public List<BlogUser> GetUsers()
         {
-            return _context.Users.Where(u => u.DeletedTime == null).OrderByDescending(u=>u.Created).ToList();
+            return _context.Users.Where(u => u.DeletedTime == null).OrderByDescending(u => u.Created).ToList();
         }
 
         public string GenerateJsonWebToken(BlogUser user)
         {
             return _jwt.GenerateJsonWebToken(user);
         }
-        
+
         public bool Delete(int userId)
         {
             var user = _context.Users.FirstOrDefault(u => u.DeletedTime == null);
@@ -94,5 +94,21 @@ namespace Blog.Features.Security
             _context.SaveChanges();
             return true;
         }
+
+        public BlogUser Register(string name, string email, bool showEmail, string password, string userAgent, string ipAddress)
+        {
+            var user = new BlogUser
+            {
+                Email = email,
+                Name = name,
+                Created = DateTime.UtcNow,
+                Modified = DateTime.UtcNow
+            };
+            user.PasswordHash = _passwordHasher.HashPassword(user, password);
+            _context.Users.Add(user);
+            _context.SaveChanges();
+            return GetUser(user.Email);
+        }
+
     }
 }

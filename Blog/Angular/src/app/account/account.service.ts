@@ -10,7 +10,7 @@ import { TokenService } from './token.service';
 @Injectable()
 export class AccountService {
 
-  baseUrl = 'http://localhost:54882/api'; // TODO: move to json setting
+  baseUrl : string = 'http://localhost:54882/api'; // TODO: move to json setting
 
   constructor(private http: HttpClient, private tokenService: TokenService) {
   }
@@ -23,12 +23,16 @@ export class AccountService {
     return this.http.delete(`${this.baseUrl}/users/${userId}`);
   }
 
+  public registerUser(name: string, email: string, showEmail: boolean, imageLink: string, password: string): Observable<User[]> {
+    return this.http.post<User[]>(`${this.baseUrl}/users/register`, { name, email, showEmail, imageLink, password });
+  }
+
   public logout() {
-      localStorage.removeItem("tokenResponse")
+    localStorage.removeItem("tokenResponse")
   }
 
   public login(email: string, password: string): Observable<TokenResponse> {
-    var tokenResponse = this.http.post<TokenResponse>(`${this.baseUrl}/users/login`, { email, password });    
+    var tokenResponse = this.http.post<TokenResponse>(`${this.baseUrl}/users/login`, { email, password });
     tokenResponse.subscribe(res => {
       this.tokenService.setTokenResponse(res);
     });

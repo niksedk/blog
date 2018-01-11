@@ -13,5 +13,6 @@ namespace Blog.Features.Security
         string GenerateJsonWebToken(BlogUser user);
         List<BlogUser> GetUsers();
         bool Delete(int userId);
+        BlogUser Register(string name, string email, bool showEmail, string password, string userAgent, string ipAddress);
     }
 }

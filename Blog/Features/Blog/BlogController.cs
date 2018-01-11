@@ -16,7 +16,8 @@ namespace Blog.Features.Blog
     {
         private readonly IBlogService _blogService;
 
-        public BlogController(IBlogService blogService, IHttpContextAccessor httpContextAccessor, 
+        public BlogController(IBlogService blogService, 
+                              IHttpContextAccessor httpContextAccessor, 
                               IUserService userService) : base(httpContextAccessor, userService)
         {
             _blogService = blogService;
@@ -34,6 +35,7 @@ namespace Blog.Features.Blog
         [HttpGet]
         [EnableCors("AllowAll")]
         [Route("comments")]
+        [Authorize(Roles = "admin")]
         public IActionResult ListComments()
         {
             var list = _blogService.ListComments();

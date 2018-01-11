@@ -45,54 +45,61 @@ namespace Blog.Features.Security.Controllers
 
         [HttpPost]
         [EnableCors("AllowAll")]
+        [Route("register")]
+        public IActionResult RegisterUser([FromBody] RegisterRequestViewModel request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Name))
+                return BadRequest(new ErrorViewModel($"{nameof(request.Name)} cannot be empty", nameof(request.Name)));
+
+            if (!EmailHelper.IsEmailValid(request.Email))
+                return BadRequest(new ErrorViewModel($"{nameof(request.Email)} is not valid", nameof(request.Email)));
+
+            if (string.IsNullOrWhiteSpace(request.Password))
+                return BadRequest(new ErrorViewModel { Error = $"{nameof(request.Password)} cannot be empty" });
+
+            // Trim spaces from name + email
+            request.Name = request.Name.Trim();
+            request.Email = request.Email.Trim();
+
+            if (_userService.GetUser(request.Email) != null)
+                return BadRequest(new ErrorViewModel($"A user with email {request.Email} already exists", nameof(request.Email)));
+
+            var user = _userService.Register(request.Name, request.Email, request.ShowEmail, request.Password,
+                                             string.Empty, RemoteIpAddress);
+            return Ok(user);
+        }
+
+        [HttpPost]
+        [EnableCors("AllowAll")]
         [Route("login")]
         public IActionResult Login([FromBody] LoginRequestViewModel request)
         {
             if (request == null)
             {
-                return BadRequest(new ErrorViewModel
-                {
-                    RequestId = Guid.NewGuid().ToString(),
-                    Error = $"Please provide credintials"
-                });
+                return BadRequest(new ErrorViewModel("Please provide credintials"));
             }
 
             if (string.IsNullOrWhiteSpace(request.Email))
             {
-                return BadRequest(new ErrorViewModel
-                {
-                    RequestId = Guid.NewGuid().ToString(),
-                    Error = $"Please provide '{nameof(request.Email)}'."
-                });
+                return BadRequest(new ErrorViewModel($"Please provide '{nameof(request.Email)}'"));
             }
 
             if (string.IsNullOrWhiteSpace(request.Password))
             {
-                return BadRequest(new ErrorViewModel
-                {
-                    RequestId = Guid.NewGuid().ToString(),
-                    Error = $"Please provide '{nameof(request.Password)}'."
-                });
+                return BadRequest(new ErrorViewModel($"Please provide '{nameof(request.Password)}'"));
             }
 
             var user = _userService.GetUser(request.Email);
             if (user == null)
             {
-                return BadRequest(new ErrorViewModel
-                {
-                    RequestId = Guid.NewGuid().ToString(),
-                    Error = "Incorrect login" // use same message for "unknown user" and "wrong password" to make hacking harder
-                });
+                // use same message for "unknown user" and "wrong password" to make hacking harder
+                return BadRequest(new ErrorViewModel("Incorrect login"));
             }
 
             var errorMessage = _userService.LoginPassword(user, request.Password, string.Empty);
             if (!string.IsNullOrEmpty(errorMessage))
             {
-                return BadRequest(new ErrorViewModel
-                {
-                    RequestId = Guid.NewGuid().ToString(),
-                    Error = errorMessage
-                });
+                return BadRequest(new ErrorViewModel(errorMessage));
             }
 
             return Ok(new TokenResponseViewModel
