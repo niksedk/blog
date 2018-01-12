@@ -16,7 +16,12 @@
   </div>
   <button type="submit" class="btn btn-primary" (click)="login()">Login</button>
   <button type="button" class="btn btn-primary" (click)="logout()">Logout</button>
-  <div *ngIf="loginErrorMessage" class="alert alert-danger" role="alert">
-    {{loginErrorMessage}}
+  <br />
+  <br />
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    {{errorMessage}}
+  </div>
+  <div *ngIf="infoMessage" class="alert alert-info" role="alert">
+    {{infoMessage}}
   </div>
 </form>

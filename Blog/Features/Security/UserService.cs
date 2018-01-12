@@ -86,7 +86,7 @@ namespace Blog.Features.Security
 
         public bool Delete(int userId)
         {
-            var user = _context.Users.FirstOrDefault(u => u.DeletedTime == null);
+            var user = _context.Users.FirstOrDefault(u => u.DeletedTime == null && u.UserId == userId);
             if (user == null)
                 return false;
 

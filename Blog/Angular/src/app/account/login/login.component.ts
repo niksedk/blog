@@ -13,7 +13,8 @@ export class LoginComponent implements OnInit {
 
   email: string;
   password: string;
-  loginErrorMessage: string;
+  errorMessage: string;
+  infoMessage: string;
 
   constructor(private accountService: AccountService,
               private router: Router) { 
@@ -23,29 +24,37 @@ export class LoginComponent implements OnInit {
   }
 
   public login() {
-    this.loginErrorMessage = null;
+    this.errorMessage = null;
+    this.infoMessage = null;
     this.accountService.login(this.email, this.password)
       .subscribe(res => {
-        this.router.navigate(['']);
+        this.infoMessage = 'You are now logged in :)';
+        setTimeout(() => {
+          this.router.navigate(['']);
+        }, 2000);
       },
       (err: HttpErrorResponse) => {
         if (err.error instanceof Error) {
           // A client-side or network error occurred. Handle it accordingly.
           if (err.error.message)
-            this.loginErrorMessage = err.error.message;
+            this.errorMessage = err.error.message;
           else
-            this.loginErrorMessage = 'Unknown error occured :(';
+            this.errorMessage = 'Unknown error occured :(';
         } else {
           // The backend returned an unsuccessful response code.
-          // The response body may contain clues as to what went wrong,
-          this.loginErrorMessage = err.error.message;
+          // The response body may contain clues as to what went wrong
+          if (err.error.message)
+            this.errorMessage = err.error.message;
+          else
+            this.errorMessage = 'Unknown error occured :(';          
         }
       });
   }
 
   public logout() {
-    this.loginErrorMessage = null;
+    this.errorMessage = null;
     this.accountService.logout();
+    this.infoMessage = 'You are now logged out';
   }  
 
 }

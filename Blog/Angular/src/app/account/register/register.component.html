@@ -10,7 +10,7 @@
   </div>
   <div class="form-check">
     <label class="form-check-label">
-      <input type="checkbox" class="form-check-input" id="showEmail" name="showEmail" [(ngModel)]="showEmail" > Show email in UI
+      <input type="checkbox" class="form-check-input" id="showEmail" name="showEmail" [(ngModel)]="showEmail"> Show email in UI
     </label>
   </div>
   <div class="form-group">
@@ -22,4 +22,12 @@
     <input type="password" class="form-control" id="password" name="password" [(ngModel)]="password" placeholder="Password">
   </div>
   <button type="submit" class="btn btn-primary" (click)="registerUser()">Register</button>
+  <br />
+  <br />
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    {{errorMessage}}
+  </div>
+  <div *ngIf="infoMessage" class="alert alert-info" role="alert">
+    {{infoMessage}}
+  </div>
 </form>
