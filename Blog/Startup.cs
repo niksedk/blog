@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using Blog.Data;
 using Blog.Data.Security;
 using Blog.Features.Blog;
@@ -37,7 +40,7 @@ namespace Blog
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = Configuration["Token:Issuer"],
-                    ValidAudience = Configuration["Token:Issuer"],                    
+                    ValidAudience = Configuration["Token:Issuer"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:Key"])),
                 };
             });
@@ -76,9 +79,21 @@ namespace Blog
                 app.UseExceptionHandler("/Home/Message");
             }
 
-            app.UseDefaultFiles();
+            app.Use(async (context, next) =>
+            {
+                await next();
+                if (context.Response.StatusCode == 404 &&
+                    !Path.HasExtension(context.Request.Path.Value) &&
+                    !context.Request.Path.ToString().StartsWith("/api/", StringComparison.OrdinalIgnoreCase))
+                {
+                    context.Request.Path = "/index.html";
+                    await next();
+                }
+            })
+            .UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new List<string> { "index.html" } });
+
             app.UseStaticFiles();
-            
+
             app.UseAuthentication();
 
             app.UseMvc(routes =>
@@ -86,6 +101,11 @@ namespace Blog
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "spa-fallback",
+                    template: "{*url}",
+                    defaults: new { controller = "Spa", action = "Index" });
             });
 
         }
