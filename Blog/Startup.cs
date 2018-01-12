@@ -86,7 +86,7 @@ namespace Blog
                     !Path.HasExtension(context.Request.Path.Value) &&
                     !context.Request.Path.ToString().StartsWith("/api/", StringComparison.OrdinalIgnoreCase))
                 {
-                    context.Request.Path = "/index.html";
+                    context.Request.Path = "/index.html"; // Go to WebRoot ("Angular/dist") - see Webroot config in Program.cs
                     await next();
                 }
             })
@@ -101,11 +101,6 @@ namespace Blog
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
-
-                routes.MapRoute(
-                    name: "spa-fallback",
-                    template: "{*url}",
-                    defaults: new { controller = "Spa", action = "Index" });
             });
 
         }

@@ -18,11 +18,15 @@
             </small>
 
           </div>
+
+          <!-- display edit/delete links -->
           <div>
             <div *ngIf="isAdministrator || hasValidToken && currentUserId && currentUserId === item.userId">
-              <button type="button" class="btn btn-link" (click)="deleteComment(item.blogCommentId)">Delete</button>
-            </div>
+                <button type="button" class="btn btn-link" (click)="deleteComment(item.blogCommentId)">Delete</button> |
+                <button type="button" class="btn btn-link" (click)="editComment(item.blogCommentId)">Edit</button>
+              </div>
           </div>
+
         </div>
         {{item.body}}
       </div>

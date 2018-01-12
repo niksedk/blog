@@ -60,4 +60,8 @@ export class CommentListComponent implements OnInit {
     });
   }
 
+  public editComment(comment: BlogComment) {
+    alert('edit');
+  }  
+
 }

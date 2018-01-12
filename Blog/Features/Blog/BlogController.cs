@@ -124,7 +124,16 @@ namespace Blog.Features.Blog
         public IActionResult DeleteComment(int commentId)
         {
             var user = BlogUser;
-            if (user == null || !user.Claims.Any(p => p.Key == "role" && p.Value == "admin"))
+            if (user == null)
+                return Unauthorized();
+
+            var ok = user.Claims.Any(p => p.Key == "role" && p.Value == "admin");
+            if (!ok)
+            {
+                var comment = _blogService.GetComment(commentId);
+                ok = comment?.CreatedBy?.UserId == user.UserId;
+            }
+            if (!ok)
                 return Unauthorized();
 
             if (_blogService.DeleteComment(user, commentId))

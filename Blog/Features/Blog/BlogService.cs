@@ -69,6 +69,11 @@ namespace Blog.Features.Blog
             return true;
         }
 
+        public BlogComment GetComment(int commentId)
+        {
+            return _context.BlogComments.FirstOrDefault(p => p.BlogCommentId == commentId);
+        }
+
         public BlogEntry GetFull(string urlFriendlyId)
         {
             var blogEntry = _context.BlogEntries

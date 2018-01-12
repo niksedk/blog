@@ -17,5 +17,6 @@ namespace Blog.Features.Blog
         BlogComment AddComment(BlogUser user, int blogEntryId, string email, string IpAddress, string body, string name);
         BlogComment UpdateComment(BlogUser user, int blogCommentId, string body);
         bool DeleteComment(BlogUser user, int blogCommentId);
+        BlogComment GetComment(int commentId);
     }
 }
