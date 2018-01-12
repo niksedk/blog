@@ -102,7 +102,6 @@ namespace Blog.Features.Security
                 Email = email,
                 Name = name,
                 Created = DateTime.UtcNow,
-                Modified = DateTime.UtcNow
             };
             user.PasswordHash = _passwordHasher.HashPassword(user, password);
             _context.Users.Add(user);

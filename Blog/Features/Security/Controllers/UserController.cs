@@ -57,6 +57,9 @@ namespace Blog.Features.Security.Controllers
             if (string.IsNullOrWhiteSpace(request.Password))
                 return BadRequest(new ErrorViewModel { Message = $"{nameof(request.Password)} cannot be empty" });
 
+            if (!PasswordValidator.IsPassWordValid(request.Password))
+                return BadRequest(new ErrorViewModel { Message = "Password must be between 8 and 64 characters and must contain both uppercase and lowercase letters" });
+
             // Trim spaces from name + email
             request.Name = request.Name.Trim();
             request.Email = request.Email.Trim();
