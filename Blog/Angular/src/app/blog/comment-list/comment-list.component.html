@@ -22,8 +22,10 @@
           <!-- display edit/delete links -->
           <div>
             <div *ngIf="isAdministrator || hasValidToken && currentUserId && currentUserId === item.userId">
-                <button type="button" class="btn btn-link" (click)="deleteComment(item.blogCommentId)">Delete</button> |
-                <app-edit-comment-modal></app-edit-comment-modal>
+                <button type="button" class="btn btn-link"
+                        (click)="deleteComment(item.blogCommentId)"
+                        [disabled]="deleteIsBusy">Delete</button> |
+                <app-edit-comment-modal [comment]="item" ></app-edit-comment-modal>
               </div>
           </div>
 
@@ -56,7 +58,7 @@
         <label for="body">Comment</label>
         <textarea class="form-control" id="body" name="body" [(ngModel)]="newComment.body" placeholder="Enter comment" rows="3"></textarea>
       </div>
-      <button type="submit" class="btn btn-primary" (click)="addComment()">Add comment</button>
+      <button type="submit" class="btn btn-primary" (click)="addComment()" [disabled]="addIsBusy">Add comment</button>
     </form>
   </div>
 </div>

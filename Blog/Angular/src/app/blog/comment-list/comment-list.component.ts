@@ -20,6 +20,8 @@ export class CommentListComponent implements OnInit {
   public isAdministrator: boolean;
   public currentUserId: number;
   public currentName: string;
+  public deleteIsBusy: boolean;
+  public addIsBusy: boolean;
 
   constructor(private blogService: BlogService, tokenService: TokenService) {
     this.hasValidToken = tokenService.hasValidToken();
@@ -47,22 +49,22 @@ export class CommentListComponent implements OnInit {
   }
 
   public addComment() {
+    this.addIsBusy = true;
     this.blogService.addComment(this.newComment).subscribe(res => {
       this.blogEntryWithComments.comments.push(res);
       this.resetNewComment();
+      this.addIsBusy = false;
     });
   }
 
   public deleteComment(commentId: number) {
+    this.deleteIsBusy = true;
     this.blogService.deleteComment(commentId)
     .subscribe(res => {
       this.blogEntryWithComments.comments = this.blogEntryWithComments.comments
       .filter((c) => c.blogCommentId !== commentId);
+      this.deleteIsBusy = false;
     });
-  }
-
-  public editComment(comment: BlogComment) {
-    alert('edit');
   }
 
 }

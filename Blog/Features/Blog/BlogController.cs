@@ -142,5 +142,30 @@ namespace Blog.Features.Blog
             return NotFound();
         }
 
+        [HttpPut]
+        [EnableCors("AllowAll")]
+        [Route("{blogEntryId}/comments")]
+        public IActionResult UpdateComment(int blogEntryId, [FromBody] UpdateCommentRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Body))
+                return BadRequest();
+
+            var user = BlogUser;
+            if (user == null)
+                return Unauthorized();
+
+            var ok = user.Claims.Any(p => p.Key == "role" && p.Value == "admin");
+            if (!ok)
+            {
+                var c = _blogService.GetComment(request.blogCommentId);
+                ok = c?.CreatedBy?.UserId == user.UserId;
+            }
+            if (!ok)
+                return Unauthorized();
+
+            var comment = _blogService.UpdateComment(user, request.blogCommentId, request.Body);
+            return Ok(BlogCommentViewModelFactory.Make(comment));
+        }
+
     }
 }

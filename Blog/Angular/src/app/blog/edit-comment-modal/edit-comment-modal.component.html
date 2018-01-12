@@ -1,15 +1,30 @@
 <ng-template #content let-c="close" let-d="dismiss">
   <div class="modal-header">
-    <h4 class="modal-title">Modal title</h4>
+    <div class="modal-title">
+      <h4>Edit comment</h4>
+      <small class="text-muted">
+        {{comment.created | date : 'medium'}} by
+        <span *ngIf="comment.email">
+          <a href="{{'mailto:' + comment.email}}">{{comment.name}}</a>
+        </span>
+        <span *ngIf="!comment.email">{{commentBody}}</span>
+      </small>
+    </div>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <p>One fine body&hellip;</p>
+    <div class="form-group">
+    </div>
+    <div class="form-group">
+      <label for="body">Comment</label>
+      <textarea class="form-control" id="body" name="body" [(ngModel)]="commentBody" placeholder="Enter comment" rows="3"></textarea>
+    </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
+    <button type="button" class="btn btn-outline-dark" (click)="updateComment()" [disabled]="updateIsBusy">Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Cancel</button>
   </div>
 </ng-template>
 

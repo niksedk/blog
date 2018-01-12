@@ -29,6 +29,10 @@ export class BlogService {
     return this.http.post<BlogComment>(`${this.baseUrl}/${comment.blogEntryId}/comments`, comment);
   }
 
+  updateComment(comment: BlogComment): Observable<BlogComment> {
+    return this.http.put<BlogComment>(`${this.baseUrl}/${comment.blogEntryId}/comments`, comment);
+  }
+
   addBlogEntry(blogEntry: BlogEntry): Observable<BlogEntry> {
     return this.http.post<BlogEntry>(this.baseUrl, blogEntry);
   }
