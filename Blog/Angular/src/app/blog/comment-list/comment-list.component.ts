@@ -22,7 +22,7 @@ export class CommentListComponent implements OnInit {
   public currentName: string;
 
   constructor(private blogService: BlogService, tokenService: TokenService) {
-    this.hasValidToken = tokenService.hasValidToken(); 
+    this.hasValidToken = tokenService.hasValidToken();
     this.isAdministrator = tokenService.isAdministrator();
     this.currentUserId = tokenService.getTokenUserId();
     this.currentName = tokenService.getTokenName();
@@ -41,7 +41,8 @@ export class CommentListComponent implements OnInit {
       created: null,
       createdBy: null,
       modified: null,
-      name: ''
+      name: '',
+      userId: -1
     };
   }
 
@@ -62,6 +63,6 @@ export class CommentListComponent implements OnInit {
 
   public editComment(comment: BlogComment) {
     alert('edit');
-  }  
+  }
 
 }

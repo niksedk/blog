@@ -9,13 +9,9 @@ import { LoginComponent } from './account/login/login.component';
 import { AccountService } from './account/account.service';
 import { TokenService } from './account/token.service';
 import { Http, HttpModule } from '@angular/http';
-
-//import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpInterceptor, HttpHandler, HttpRequest, HttpClient, HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './account/token-interceptor';
-
-
 import { CommentListComponent } from './blog/comment-list/comment-list.component';
 import { BlogService } from './blog/blog.service';
 import { BlogListComponent } from './blog/blog-list/blog-list.component';
@@ -24,6 +20,8 @@ import { BlogEntryWithCommentsComponent } from './blog/blog-entry-with-comments/
 import { BlogManageComponent } from './admin/blog-manage/blog-manage.component';
 import { UserManageComponent } from './admin/user-manage/user-manage.component';
 import { CommentManageComponent } from './admin/comment-admin/comment-manage.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { EditCommentModalComponent } from './blog/edit-comment-modal/edit-comment-modal.component';
 
 @NgModule({
   declarations: [
@@ -37,16 +35,18 @@ import { CommentManageComponent } from './admin/comment-admin/comment-manage.com
     BlogEntryWithCommentsComponent,
     BlogManageComponent,
     UserManageComponent,
-    CommentManageComponent
+    CommentManageComponent,
+    EditCommentModalComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule 
+    HttpClientModule,
+    NgbModule.forRoot()
   ],
   providers: [
-    AccountService, 
+    AccountService,
     BlogService,
     TokenService,
     {

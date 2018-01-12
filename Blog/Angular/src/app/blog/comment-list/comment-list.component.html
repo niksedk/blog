@@ -23,7 +23,7 @@
           <div>
             <div *ngIf="isAdministrator || hasValidToken && currentUserId && currentUserId === item.userId">
                 <button type="button" class="btn btn-link" (click)="deleteComment(item.blogCommentId)">Delete</button> |
-                <button type="button" class="btn btn-link" (click)="editComment(item.blogCommentId)">Edit</button>
+                <app-edit-comment-modal></app-edit-comment-modal>
               </div>
           </div>
 
@@ -51,7 +51,7 @@
             placeholder="Enter email">
           <small id="emailHelp" class="form-text text-muted">Optional - will be displayed with comment if entered</small>
         </div>
-      </div>      
+      </div>
       <div class="form-group">
         <label for="body">Comment</label>
         <textarea class="form-control" id="body" name="body" [(ngModel)]="newComment.body" placeholder="Enter comment" rows="3"></textarea>
