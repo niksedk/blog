@@ -5,6 +5,7 @@ using System.Text;
 using Blog.Data;
 using Blog.Data.Security;
 using Blog.Features.Blog;
+using Blog.Features.Log;
 using Blog.Features.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -59,6 +60,7 @@ namespace Blog
             services.AddSingleton<IJwt, Jwt>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBlogService, BlogService>();
+            services.AddScoped<IReferrerLogRepository, ReferrerLogRepository>();
             services.AddSingleton<IPasswordHasher<BlogUser>, PasswordHasher>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -67,7 +69,7 @@ namespace Blog
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IReferrerLogRepository referrerLogger)
         {
             if (env.IsDevelopment())
             {
@@ -81,7 +83,17 @@ namespace Blog
 
             app.Use(async (context, next) =>
             {
+                // log referrer if request does not come from current host
+                string referrer = context.Request.Headers["Referer"].ToString();
+                if (!string.IsNullOrEmpty(referrer) && !referrer.ToLowerInvariant().Contains(context.Request.Host.Value.ToLowerInvariant()))
+                {
+                    var referrerLogRepository = context.RequestServices.GetRequiredService<IReferrerLogRepository>();
+                    referrerLogRepository.Log(referrer);
+                }
+
                 await next();
+
+                // let angular routing handle "not found" requests except "/api/*"
                 if (context.Response.StatusCode == 404 &&
                     !Path.HasExtension(context.Request.Path.Value) &&
                     !context.Request.Path.ToString().StartsWith("/api/", StringComparison.OrdinalIgnoreCase))

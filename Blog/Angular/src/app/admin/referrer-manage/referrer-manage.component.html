@@ -1,0 +1,14 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+        <th>Created</th>
+        <th>Referrer</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let item of referrers">
+          <td>{{item.created | date: 'dd/MM-yyyy HH:mm'}}</td>
+          <td>{{item.ref}}</td>
+        </tr>
+  </tbody>
+</table>

@@ -1,4 +1,5 @@
 ﻿using Blog.Data.Blog;
+using Blog.Data.Log;
 using Blog.Data.Security;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,7 @@ namespace Blog.Data
         public DbSet<BlogClaim> Claims { get; set; }
         public DbSet<BlogEntry> BlogEntries { get; set; }
         public DbSet<BlogComment> BlogComments { get; set; }
+        public DbSet<Referrer> Referrers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,6 +24,7 @@ namespace Blog.Data
             modelBuilder.Entity<BlogClaim>().ToTable("Claim");
             modelBuilder.Entity<BlogEntry>().ToTable("BlogEntry");
             modelBuilder.Entity<BlogComment>().ToTable("BlogComment");
+            modelBuilder.Entity<Referrer>().ToTable("Referrer");
         }
 
     }

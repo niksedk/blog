@@ -22,6 +22,7 @@ import { UserManageComponent } from './admin/user-manage/user-manage.component';
 import { CommentManageComponent } from './admin/comment-admin/comment-manage.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditCommentModalComponent } from './blog/edit-comment-modal/edit-comment-modal.component';
+import { ReferrerManageComponent } from './admin/referrer-manage/referrer-manage.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { EditCommentModalComponent } from './blog/edit-comment-modal/edit-commen
     BlogManageComponent,
     UserManageComponent,
     CommentManageComponent,
-    EditCommentModalComponent
+    EditCommentModalComponent,
+    ReferrerManageComponent
   ],
   imports: [
     BrowserModule,

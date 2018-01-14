@@ -10,7 +10,7 @@ import { TokenService } from './token.service';
 @Injectable()
 export class AccountService {
 
-  baseUrl : string = 'http://localhost:54882/api'; // TODO: move to json setting
+  baseUrl = 'http://localhost:54882/api'; // TODO: move to json setting
 
   constructor(private http: HttpClient, private tokenService: TokenService) {
   }
@@ -28,7 +28,7 @@ export class AccountService {
   }
 
   public login(email: string, password: string): Observable<TokenResponse> {
-    var tokenResponse = this.http.post<TokenResponse>(`${this.baseUrl}/users/login`, { email, password });
+    const tokenResponse = this.http.post<TokenResponse>(`${this.baseUrl}/users/login`, { email, password });
     tokenResponse.subscribe(res => {
       this.tokenService.setTokenResponse(res);
     });

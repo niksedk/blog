@@ -21,7 +21,7 @@ namespace Blog.Data
                     Name = "Admin",
                     Email = "no@email.com",
                     Created = DateTime.UtcNow,
-                    Modified = DateTime.UtcNow,                    
+                    Modified = DateTime.UtcNow,
                     Claims = new List<BlogClaim>
                     {
                         new BlogClaim { Key = "role", Value = "admin" },
@@ -56,8 +56,19 @@ namespace Blog.Data
                     blogEntry.CommentCount = blogEntry.Comments.Count;
                     context.BlogEntries.Add(blogEntry);
                     context.SaveChanges();
-                }
+                }               
+            }
+
+            if (!context.Referrers.Any())
+            {
+                context.Referrers.Add(new Log.Referrer
+                {
+                    Created = DateTime.UtcNow,
+                    Ref = "http://some.site"
+                });
+                context.SaveChanges();
             }
         }
+
     }
 }

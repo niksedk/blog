@@ -7,6 +7,7 @@ import { BlogManageComponent } from './admin/blog-manage/blog-manage.component';
 import { UserManageComponent } from './admin/user-manage/user-manage.component';
 import { CommentManageComponent  } from './admin/comment-admin/comment-manage.component';
 import { LoginComponent } from './account/login/login.component';
+import { ReferrerManageComponent } from './admin/referrer-manage/referrer-manage.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'admin/comments',
     component: CommentManageComponent
+  },
+  {
+    path: 'admin/referrers',
+    component: ReferrerManageComponent
   }
 ];
 
