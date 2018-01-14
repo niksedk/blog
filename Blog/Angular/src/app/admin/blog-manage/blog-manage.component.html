@@ -12,7 +12,10 @@
           <td>{{item.created | date: 'dd/MM-yyyy HH:mm'}}</td>
           <td>{{item.title}}</td>
           <td><a routerLink="/blog/{{item.urlFriendlyId}}">{{item.commentCount}}</a></td>
-          <td><button type="button" class="btn btn-link" (click)="deleteBlogEntry(item)">Delete</button></td>
+          <td>
+            <button type="button" class="btn btn-link" (click)="deleteBlogEntry(item)">Delete</button>
+            | <app-edit-blog-entry-modal [blogEntry]="item" ></app-edit-blog-entry-modal>
+          </td>
         </tr>
   </tbody>
 </table>

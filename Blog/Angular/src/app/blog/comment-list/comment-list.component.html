@@ -1,7 +1,7 @@
 <div *ngIf="blogEntryWithComments != null">
   <div *ngFor="let item of blogEntryWithComments?.comments">
     <div class="card">
-      <div class="card-block">
+      <div class="card-body">
 
         <div class="d-flex justify-content-between">
 
@@ -30,7 +30,7 @@
           </div>
 
         </div>
-        {{item.body}}
+        <div [innerHTML]="item.body"></div>
       </div>
     </div>
     <br />

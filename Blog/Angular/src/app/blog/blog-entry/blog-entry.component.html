@@ -1,6 +1,6 @@
 <div *ngIf="blogEntry != null">
   <div class="card">
-    <div class="card-block">
+    <div class="card-body">
 
       <!-- header -->
       <div class="d-flex justify-content-between">
@@ -28,7 +28,7 @@
         <span *ngIf="!blogEntry.email">{{blogEntry.name}}</span>
       </small>
 
-      <p class="card-text">{{blogEntry.body}}</p>
+      <div class="card-text" [innerHTML]="blogEntry.body"></div>
     </div>
   </div>
 </div>

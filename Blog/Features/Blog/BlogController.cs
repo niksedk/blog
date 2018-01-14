@@ -72,7 +72,7 @@ namespace Blog.Features.Blog
         [EnableCors("AllowAll")]
         [Route("{blogEntryId}")]
         [Authorize(Roles = "admin")]
-        public IActionResult Update(int blogEntryId, UpdateBlogEntryRequest request)
+        public IActionResult Update(int blogEntryId, [FromBody] UpdateBlogEntryRequest request)
         {
             if (string.IsNullOrWhiteSpace(request.Title) || string.IsNullOrWhiteSpace(request.Body))
                 return BadRequest();

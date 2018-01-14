@@ -144,7 +144,7 @@ namespace Blog.Features.Blog
             blogEntry.Modified = DateTime.UtcNow;
 
             _context.SaveChanges();
-            return blogEntry;
+            return GetFull(blogEntry.UrlFriendlyId);
         }
 
         public BlogComment UpdateComment(BlogUser user, int blogCommentId, string body)
@@ -155,6 +155,7 @@ namespace Blog.Features.Blog
 
             blogComment.Body = body;
             blogComment.Modified = DateTime.UtcNow;
+            _context.SaveChanges();
 
             return blogComment;
         }

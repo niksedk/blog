@@ -37,6 +37,10 @@ export class BlogService {
     return this.http.post<BlogEntry>(this.baseUrl, blogEntry);
   }
 
+  updateBlogEntry(blogEntry: BlogEntry): Observable<BlogEntry> {
+    return this.http.put<BlogEntry>(`${this.baseUrl}/${blogEntry.blogEntryId}`, blogEntry);
+  }
+
   deleteComment(commentId: number) {
     return this.http.delete(`${this.baseUrl}/comments/${commentId}`);
   }
