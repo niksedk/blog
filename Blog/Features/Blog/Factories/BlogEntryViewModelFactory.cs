@@ -28,6 +28,11 @@ namespace Blog.Features.Blog.Factories
 
         internal static List<BlogEntryViewModel> Make(List<BlogEntry> blogEntries)
         {
+            if (blogEntries == null)
+            {
+                return new List<BlogEntryViewModel>();
+            }
+
             var list = new List<BlogEntryViewModel>(blogEntries.Count);
             foreach (var blogEntry in blogEntries)
             {

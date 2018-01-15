@@ -8,6 +8,11 @@ namespace Blog.Features.Blog.Factories
     {
         internal static ICollection<BlogCommentViewModel> Make(ICollection<BlogComment> blogEntryComments)
         {
+            if (blogEntryComments == null)
+            {
+                return new List<BlogCommentViewModel>();
+            }
+
             var list = new List<BlogCommentViewModel>(blogEntryComments.Count);
             foreach (var blogComment in blogEntryComments)
             {
@@ -20,13 +25,13 @@ namespace Blog.Features.Blog.Factories
         {
             var vm = new BlogCommentViewModel
             {
-                 Name = blogComment.CreatedBy != null ? blogComment.CreatedBy.Name : blogComment.Name,
-                 Modified = blogComment.Modified,
-                 Created = blogComment.Created,
-                 Body = blogComment.Body,
-                 UserId = blogComment.CreatedBy?.UserId,
-                 BlogCommentId = blogComment.BlogCommentId,
-                 Email = blogComment.Email,
+                Name = blogComment.CreatedBy != null ? blogComment.CreatedBy.Name : blogComment.Name,
+                Modified = blogComment.Modified,
+                Created = blogComment.Created,
+                Body = blogComment.Body,
+                UserId = blogComment.CreatedBy?.UserId,
+                BlogCommentId = blogComment.BlogCommentId,
+                Email = blogComment.Email,
             };
             if (blogComment.CreatedBy != null)
             {

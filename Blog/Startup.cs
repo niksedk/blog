@@ -64,8 +64,9 @@ namespace Blog
             services.AddSingleton<IPasswordHasher<BlogUser>, PasswordHasher>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            // Entity Framework
+            // Entity Framework provider (setup to sql server, mysql etc.)
             services.AddDbContext<BlogDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<BlogDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
