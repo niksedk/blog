@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ReferrerManageComponent implements OnInit {
 
-  baseUrl = 'http://localhost:54882/api/Logs/Referrers'; // TODO: move to json setting
+  baseUrl = '/api/Logs/Referrers'; // TODO: move to json setting
 
   public referrers: Referrer[];
 

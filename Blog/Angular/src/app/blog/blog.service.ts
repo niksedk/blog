@@ -6,10 +6,12 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { BlogEntryFull } from './models/blog-entry-full';
 import { BlogComment } from './models/blog-comment';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class BlogService {
-  private baseUrl = 'http://localhost:54882/api/blog'; // TODO: move to json setting
+  
+  baseUrl = environment.baseUrl + '/blog';
 
   constructor(private http: HttpClient) {}
 
