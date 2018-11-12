@@ -51,6 +51,10 @@ export class LoginComponent implements OnInit {
       });
   }
 
+public loginViaGoogle() {
+  window.location.href = 'https://accounts.google.com/o/oauth2/auth?scope=email%20profile&state=1847377&redirect_uri=https%3A%2F%2Fsubtitleedit.io%2Flogin%2Foauth2callback&response_type=token&client_id=118671712464-ds9a5skbkqarpj1smebu45bimae83fdk.apps.googleusercontent.com';
+}
+
   public logout() {
     this.errorMessage = null;
     this.accountService.logout();

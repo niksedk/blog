@@ -8,6 +8,7 @@ import { UserManageComponent } from './admin/user-manage/user-manage.component';
 import { CommentManageComponent  } from './admin/comment-admin/comment-manage.component';
 import { LoginComponent } from './account/login/login.component';
 import { ReferrerManageComponent } from './admin/referrer-manage/referrer-manage.component';
+import { GoogleLoginComponent } from './account/google-login/google-login.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'login/oauth2callback',
+    component: GoogleLoginComponent
   },
   {
     path: 'blog/:urlFriendlyId',

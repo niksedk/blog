@@ -24,6 +24,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditCommentModalComponent } from './blog/edit-comment-modal/edit-comment-modal.component';
 import { ReferrerManageComponent } from './admin/referrer-manage/referrer-manage.component';
 import { EditBlogEntryModalComponent } from './admin/edit-blog-entry-modal/edit-blog-entry-modal.component';
+import { GoogleLoginComponent } from './account/google-login/google-login.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { EditBlogEntryModalComponent } from './admin/edit-blog-entry-modal/edit-
     CommentManageComponent,
     EditCommentModalComponent,
     ReferrerManageComponent,
-    EditBlogEntryModalComponent
+    EditBlogEntryModalComponent,
+    GoogleLoginComponent
   ],
   imports: [
     BrowserModule,
