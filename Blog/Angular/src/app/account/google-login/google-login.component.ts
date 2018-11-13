@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AccountService } from '../account.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-google-login',
@@ -12,8 +14,11 @@ export class GoogleLoginComponent implements OnInit {
   tokenType: string;
   expiresIn: string;
   error: string;
+  infoMessage: string;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private accountService: AccountService,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   getFragmentParam(paramName : string) {
     let name = paramName.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -26,7 +31,36 @@ export class GoogleLoginComponent implements OnInit {
     this.tokenType = this.getFragmentParam('token_type');
     this.expiresIn = this.getFragmentParam('expires_in');
     this.error = this.getFragmentParam('error');
+    console.log('accessToken: ' + this.accessToken);
 
-    // post to server...
+    if (this.accessToken) {
+      console.log('accessToken found: ' + this.accessToken);
+      this.accountService.loginViaGoogleToken(this.accessToken)
+      .subscribe(res => {
+        this.infoMessage = 'You are now logged in :)';
+        setTimeout(() => {
+          this.router.navigate(['']);
+        }, 2000);
+      },
+      (err: HttpErrorResponse) => {
+        if (err.error instanceof Error) {
+          // A client-side or network error occurred. Handle it accordingly.
+          if (err.error.message)
+            this.error = err.error.message;
+          else
+            this.error = 'Unknown error occured :(';
+        } else {
+          // The backend returned an unsuccessful response code.
+          // The response body may contain clues as to what went wrong
+          if (err.error.message)
+            this.error = err.error.message;
+          else
+            this.error = 'Unknown error occured :(';          
+        }
+      });
+    } else {
+      console.log('accessToken not found: ' + this.accessToken);
+        this.error = "Unable to login - no token from Google :(";
+    }
   }
 }
