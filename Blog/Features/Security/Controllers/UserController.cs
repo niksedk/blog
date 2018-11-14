@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using Blog.Features.Security.ViewModels;
 using Blog.Features.Shared;
 using Blog.Features.Shared.ViewModels;
@@ -6,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Blog.Features.Security.Controllers
 {
@@ -107,11 +110,78 @@ namespace Blog.Features.Security.Controllers
 
             return Ok(new TokenResponseViewModel
             {
-                 AccessToken = _userService.GenerateJsonWebToken(user),
-                 ExpiresIn = 100,
-                 RefreshToken = Guid.NewGuid().ToString(),
-                 TokenType = "Bearer"
+                AccessToken = _userService.GenerateJsonWebToken(user),
+                ExpiresIn = 100,
+                RefreshToken = Guid.NewGuid().ToString(),
+                TokenType = "Bearer"
             });
+        }
+
+        public class GoogleUser
+        {
+            public string Email { get; set; }
+            public string Picture { get; set; }
+            public string Name { get; set; }
+        }
+
+        public class LoginViaGoogleRequest
+        {
+            public string Token { get; set; }
+        }
+
+        [HttpPost]
+        [EnableCors("AllowAll")]
+        [Route("googletokensignin")]
+        public IActionResult LoginViaGoogle([FromBody] LoginViaGoogleRequest request)
+        {
+            if (string.IsNullOrEmpty(request?.Token))
+            {
+                return BadRequest(new TokenResponseViewModel
+                {
+                    AccessToken = "Token not found",
+                    ExpiresIn = 0,
+                    RefreshToken = Guid.NewGuid().ToString(),
+                    TokenType = "Error"
+                });
+            }
+
+            try
+            {
+
+                GoogleUser googleUser;
+                using (var httpClient = new HttpClient())
+                {
+                    var validateTokenUrl = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + request.Token;
+                    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    var response = httpClient.GetAsync(validateTokenUrl).Result;
+                    string json = response.Content.ReadAsStringAsync().Result;
+                    googleUser = JsonConvert.DeserializeObject<GoogleUser>(json);
+                }
+
+                var user = _userService.GetUser(googleUser.Email);
+                if (user == null) //TODO: Make a Google provider check
+                {
+                    user = _userService.Register(googleUser.Name, googleUser.Email, false, string.Empty, string.Empty, RemoteIpAddress);
+                }
+
+                return Ok(new TokenResponseViewModel
+                {
+                    AccessToken = _userService.GenerateJsonWebToken(user),
+                    ExpiresIn = 100,
+                    RefreshToken = Guid.NewGuid().ToString(),
+                    TokenType = "Bearer"
+                });
+            }
+            catch (Exception e)
+            {
+                return Ok(new TokenResponseViewModel
+                {
+                    AccessToken = e.Message + Environment.NewLine + e.StackTrace,
+                    ExpiresIn = 0,
+                    RefreshToken = Guid.NewGuid().ToString(),
+                    TokenType = "Error"
+                });
+            }
         }
 
     }

@@ -59,9 +59,7 @@ export class AccountService {
   }
   
   public loginViaGoogleToken(token: string) : Observable<TokenResponse> {
-    console.log('loginViaGoogleToken called with token: ' + token);
-    console.log('loginViaGoogleToken url: ' + `${this.baseUrl}/google-tokensignin`);
-    const tokenResponse = this.http.post<TokenResponse>(`${this.baseUrl}/google-tokensignin`, { token });
+    const tokenResponse = this.http.post<TokenResponse>(`${this.baseUrl}/googletokensignin`, { token });
     tokenResponse.subscribe(res => {
       this.tokenService.setTokenResponse(res);
     });
