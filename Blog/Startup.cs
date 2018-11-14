@@ -82,28 +82,28 @@ namespace Blog
                 app.UseExceptionHandler("/Home/Message");
             }
 
-            app.Use(async (context, next) =>
-            {
-                // log referrer if request does not come from current host
-                string referrer = context.Request.Headers["Referer"].ToString();
-                if (!string.IsNullOrEmpty(referrer) && !referrer.ToLowerInvariant().Contains(context.Request.Host.Value.ToLowerInvariant()))
-                {
-                    var referrerLogRepository = context.RequestServices.GetRequiredService<IReferrerLogRepository>();
-                    referrerLogRepository.Log(referrer);
-                }
+            //app.Use(async (context, next) =>
+            //{
+            //    // log referrer if request does not come from current host
+            //    string referrer = context.Request.Headers["Referer"].ToString();
+            //    if (!string.IsNullOrEmpty(referrer) && !referrer.ToLowerInvariant().Contains(context.Request.Host.Value.ToLowerInvariant()))
+            //    {
+            //        var referrerLogRepository = context.RequestServices.GetRequiredService<IReferrerLogRepository>();
+            //        referrerLogRepository.Log(referrer);
+            //    }
 
-                await next();
+            //    await next();
 
-                // let angular routing handle "not found" requests except "/api/*"
-                if (context.Response.StatusCode == 404 &&
-                    !Path.HasExtension(context.Request.Path.Value) &&
-                    !context.Request.Path.ToString().StartsWith("/api/", StringComparison.OrdinalIgnoreCase))
-                {
-                    context.Request.Path = "/index.html"; // Go to WebRoot ("Angular/dist") - see Webroot config in Program.cs
-                    await next();
-                }
-            })
-            .UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new List<string> { "index.html" } });
+            //    // let angular routing handle "not found" requests except "/api/*"
+            //    if (context.Response.StatusCode == 404 &&
+            //        !Path.HasExtension(context.Request.Path.Value) &&
+            //        !context.Request.Path.ToString().StartsWith("/api/", StringComparison.OrdinalIgnoreCase))
+            //    {
+            //        context.Request.Path = "/index.html"; // Go to WebRoot ("Angular/dist") - see Webroot config in Program.cs
+            //        await next();
+            //    }
+            //})
+            //.UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new List<string> { "index.html" } });
 
             app.UseStaticFiles();
 
@@ -114,6 +114,13 @@ namespace Blog
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            //handle client side routes
+            app.Run(async (context) =>
+            {
+                context.Response.ContentType = "text/html";
+                await context.Response.SendFileAsync(Path.Combine(env.WebRootPath, "index.html"));
             });
 
         }
